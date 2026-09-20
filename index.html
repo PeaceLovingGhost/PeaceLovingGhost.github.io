@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A P Abhiram Krishna — Data Science &amp; ML</title>
+<meta name="description" content="Portfolio of A P Abhiram Krishna — Data Science, Machine Learning, and UML/diagram automation research.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #1B1030;
+    --bg-raised: #241640;
+    --bg-raised-2: #2B1B4D;
+    --marigold: #FFB627;
+    --teal: #3FDCC4;
+    --text: #F3EEFA;
+    --text-dim: #B6A9D1;
+    --line: rgba(243,238,250,0.12);
+    --line-strong: rgba(243,238,250,0.22);
+    --display: 'Space Grotesk', sans-serif;
+    --body: 'Inter', sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  *{ box-sizing: border-box; margin:0; padding:0; }
+
+  html{ scroll-behavior: smooth; }
+
+  body{
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--body);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior: auto; }
+    *{ animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
+  }
+
+  a{ color: inherit; text-decoration: none; }
+  a:focus-visible, button:focus-visible{ outline: 2px solid var(--teal); outline-offset: 3px; border-radius: 2px; }
+
+  .wrap{ max-width: 1080px; margin: 0 auto; padding: 0 32px; }
+
+  /* ---------- Nav ---------- */
+  nav{
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(27,16,48,0.82);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  nav .wrap{ display:flex; align-items:center; justify-content: space-between; height: 64px; }
+  .nav-mark{ font-family: var(--display); font-weight: 700; font-size: 1.05rem; letter-spacing: 0.02em; }
+  .nav-mark span{ color: var(--marigold); }
+  .nav-links{ display:flex; gap: 28px; list-style:none; }
+  .nav-links a{ font-size: 0.92rem; color: var(--text-dim); transition: color 0.2s; position: relative; }
+  .nav-links a:hover{ color: var(--text); }
+  .nav-toggle{ display:none; background:none; border:none; color: var(--text); font-size: 1.4rem; cursor:pointer; }
+
+  @media (max-width: 760px){
+    .nav-links{
+      position: absolute; top: 64px; left:0; right:0;
+      flex-direction: column; gap:0;
+      background: var(--bg-raised);
+      border-bottom: 1px solid var(--line);
+      max-height: 0; overflow: hidden; transition: max-height 0.3s ease;
+    }
+    .nav-links.open{ max-height: 400px; }
+    .nav-links a{ display:block; padding: 16px 32px; border-top: 1px solid var(--line); }
+    .nav-toggle{ display:block; }
+  }
+
+  /* ---------- Hero ---------- */
+  .hero{
+    position: relative;
+    min-height: 100vh;
+    display:flex; flex-direction:column; justify-content:center;
+    padding-top: 64px;
+    overflow: hidden;
+  }
+  #node-canvas{ position:absolute; inset:0; width:100%; height:100%; opacity: 0.55; }
+  .hero-inner{ position:relative; z-index:2; }
+  .hero .eyebrow{
+    font-family: var(--mono); font-size: 0.82rem; color: var(--teal);
+    margin-bottom: 22px; display:flex; align-items:center; gap: 10px;
+  }
+  .eyebrow .dot{ width:6px; height:6px; border-radius:50%; background: var(--teal); box-shadow: 0 0 8px var(--teal); }
+  .hero h1{
+    font-family: var(--display); font-weight: 700;
+    font-size: clamp(2.4rem, 6vw, 4.4rem);
+    line-height: 1.05;
+    max-width: 15ch;
+    letter-spacing: -0.01em;
+  }
+  .hero h1 em{ font-style: normal; color: var(--marigold); }
+  .hero p.lede{
+    margin-top: 26px; max-width: 56ch;
+    font-size: 1.1rem; color: var(--text-dim);
+  }
+  .hero-actions{ margin-top: 38px; display:flex; gap: 16px; flex-wrap: wrap; }
+  .btn{
+    font-family: var(--body); font-weight: 600; font-size: 0.95rem;
+    padding: 13px 26px; border-radius: 8px; border: 1px solid transparent;
+    cursor: pointer; transition: transform 0.15s ease, background 0.2s, border-color 0.2s;
+    display:inline-flex; align-items:center; gap:8px;
+  }
+  .btn-primary{ background: var(--marigold); color: #1B1030; }
+  .btn-primary:hover{ transform: translateY(-2px); }
+  .btn-ghost{ border-color: var(--line-strong); color: var(--text); }
+  .btn-ghost:hover{ border-color: var(--teal); color: var(--teal); transform: translateY(-2px); }
+
+  .scroll-cue{
+    position:absolute; bottom: 34px; left: 32px; z-index:2;
+    font-family: var(--mono); font-size: 0.72rem; color: var(--text-dim);
+    display:flex; align-items:center; gap:10px;
+  }
+  .scroll-cue::before{ content:''; width:26px; height:1px; background: var(--line-strong); }
+
+  /* ---------- Section shells ---------- */
+  section{ padding: 120px 0; position: relative; }
+  .section-head{ margin-bottom: 56px; max-width: 62ch; }
+  .section-head .tag{ font-family: var(--mono); font-size: 0.8rem; color: var(--teal); margin-bottom: 14px; display:block; }
+  .section-head h2{ font-family: var(--display); font-weight: 600; font-size: clamp(1.8rem, 3.4vw, 2.6rem); }
+  .section-head p{ margin-top: 16px; color: var(--text-dim); font-size: 1.02rem; max-width: 58ch; }
+
+  /* ---------- About ---------- */
+  #about{ border-top: 1px solid var(--line); }
+  .about-grid{ display:grid; grid-template-columns: 1.3fr 1fr; gap: 64px; align-items:start; }
+  @media (max-width: 800px){ .about-grid{ grid-template-columns: 1fr; gap: 40px; } }
+  .about-text p{ color: var(--text-dim); font-size: 1.04rem; margin-bottom: 18px; }
+  .about-text strong{ color: var(--text); font-weight: 600; }
+  .stat-block{ display:grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .stat{
+    border: 1px solid var(--line); border-radius: 12px; padding: 22px 20px;
+    background: linear-gradient(160deg, var(--bg-raised), transparent);
+  }
+  .stat .num{ font-family: var(--display); font-size: 1.8rem; font-weight: 700; color: var(--marigold); }
+  .stat .label{ font-size: 0.85rem; color: var(--text-dim); margin-top: 6px; }
+
+  /* ---------- Projects (node chain) ---------- */
+  #projects{ border-top: 1px solid var(--line); }
+  .project-chain{ position: relative; }
+  .project-chain::before{
+    content:''; position:absolute; left: 11px; top: 14px; bottom: 14px; width: 1px;
+    background: linear-gradient(var(--teal), var(--marigold));
+    opacity: 0.35;
+  }
+  .project-node{ position: relative; padding-left: 52px; margin-bottom: 44px; }
+  .project-node:last-child{ margin-bottom: 0; }
+  .project-node::before{
+    content:''; position:absolute; left: 5px; top: 8px; width: 13px; height:13px; border-radius:50%;
+    background: var(--bg); border: 2px solid var(--teal);
+    box-shadow: 0 0 0 4px var(--bg);
+  }
+  .project-card{
+    border: 1px solid var(--line); border-radius: 14px; padding: 30px 32px;
+    background: var(--bg-raised); transition: border-color 0.2s, transform 0.2s;
+  }
+  .project-card:hover{ border-color: var(--line-strong); transform: translateY(-3px); }
+  .project-top{ display:flex; justify-content: space-between; align-items:flex-start; gap: 20px; flex-wrap: wrap; }
+  .project-card h3{ font-family: var(--display); font-size: 1.28rem; font-weight: 600; max-width: 46ch; }
+  .project-period{ font-family: var(--mono); font-size: 0.78rem; color: var(--text-dim); white-space: nowrap; padding-top: 4px; }
+  .project-card p{ color: var(--text-dim); margin-top: 14px; max-width: 68ch; }
+  .project-tags{ display:flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+  .tag-pill{
+    font-family: var(--mono); font-size: 0.74rem; padding: 5px 11px; border-radius: 20px;
+    border: 1px solid var(--line-strong); color: var(--text-dim);
+  }
+  .project-foot{ margin-top: 20px; display:flex; align-items:center; gap: 14px; flex-wrap: wrap; }
+  .status-pill{
+    font-family: var(--mono); font-size: 0.74rem; padding: 6px 12px; border-radius: 20px;
+    display:inline-flex; align-items:center; gap:7px;
+  }
+  .status-pill.wip{ background: rgba(255,182,39,0.12); color: var(--marigold); }
+  .status-pill.published{ background: rgba(63,220,196,0.12); color: var(--teal); }
+  .status-pill .dot{ width:6px; height:6px; border-radius:50%; background: currentColor; }
+  .doi-link{ font-family: var(--mono); font-size: 0.78rem; color: var(--teal); border-bottom: 1px solid transparent; }
+  .doi-link:hover{ border-color: var(--teal); }
+
+  /* ---------- Skills ---------- */
+  #skills{ border-top: 1px solid var(--line); }
+  .skill-clusters{ display:grid; grid-template-columns: repeat(2, 1fr); gap: 28px; }
+  @media (max-width: 720px){ .skill-clusters{ grid-template-columns: 1fr; } }
+  .cluster{ border: 1px solid var(--line); border-radius: 14px; padding: 26px 26px 22px; }
+  .cluster h3{ font-family: var(--display); font-size: 1.08rem; font-weight: 600; margin-bottom: 10px; }
+  .cluster p{ color: var(--text-dim); font-size: 0.92rem; margin-bottom: 16px; }
+  .node-tags{ display:flex; flex-wrap:wrap; gap: 8px; }
+  .node-tag{
+    font-family: var(--mono); font-size: 0.76rem; padding: 6px 12px;
+    border-radius: 6px; background: var(--bg-raised-2); color: var(--text);
+    border: 1px solid var(--line);
+  }
+  .cluster.soft h3{ color: var(--teal); }
+  .cluster.core h3{ color: var(--marigold); }
+
+  /* ---------- Timeline (education) ---------- */
+  #education{ border-top: 1px solid var(--line); }
+  .timeline{ display:flex; flex-direction: column; gap: 0; }
+  .tl-item{ display:grid; grid-template-columns: 200px 1fr; gap: 28px; padding: 26px 0; border-bottom: 1px solid var(--line); }
+  .tl-item:last-child{ border-bottom:none; }
+  @media (max-width: 640px){ .tl-item{ grid-template-columns: 1fr; gap: 6px; } }
+  .tl-period{ font-family: var(--mono); font-size: 0.82rem; color: var(--teal); }
+  .tl-body h3{ font-family: var(--display); font-size: 1.08rem; font-weight: 600; }
+  .tl-body .place{ color: var(--text-dim); font-size: 0.92rem; margin-top: 4px; }
+  .tl-body .cgpa{ font-family: var(--mono); font-size: 0.8rem; color: var(--marigold); margin-top: 8px; display:inline-block; }
+
+  /* ---------- Achievements / interests / orgs ---------- */
+  #more{ border-top: 1px solid var(--line); }
+  .more-grid{ display:grid; grid-template-columns: 1fr 1fr; gap: 56px; }
+  @media (max-width: 800px){ .more-grid{ grid-template-columns: 1fr; gap: 40px; } }
+  .more-col h3{ font-family: var(--display); font-size: 1.1rem; font-weight: 600; margin-bottom: 20px; color: var(--marigold); }
+  .achv-list{ list-style:none; display:flex; flex-direction: column; gap: 18px; }
+  .achv-list li{ padding-left: 20px; position: relative; color: var(--text-dim); font-size: 0.96rem; }
+  .achv-list li::before{ content:'—'; position:absolute; left:0; color: var(--teal); }
+  .achv-list strong{ color: var(--text); display:block; font-weight: 600; margin-bottom: 2px; }
+  .interest-list{ display:flex; flex-direction: column; gap: 20px; }
+  .interest-item h4{ font-family: var(--display); font-size: 1rem; font-weight: 600; }
+  .interest-item p{ color: var(--text-dim); font-size: 0.92rem; margin-top: 4px; }
+
+  .courses{ margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--line); }
+  .courses h4{ font-family: var(--display); font-size: 1rem; font-weight: 600; margin-bottom: 14px; color: var(--marigold); }
+  .course-row{ display:flex; justify-content: space-between; gap: 16px; padding: 10px 0; font-size: 0.9rem; color: var(--text-dim); border-bottom: 1px solid var(--line); }
+  .course-row:last-child{ border-bottom:none; }
+  .course-row .course-date{ font-family: var(--mono); font-size: 0.78rem; white-space: nowrap; }
+
+  /* ---------- Contact ---------- */
+  #contact{ border-top: 1px solid var(--line); padding-bottom: 100px; }
+  .contact-card{
+    border: 1px solid var(--line-strong); border-radius: 20px;
+    padding: 56px 48px; text-align: center;
+    background: radial-gradient(circle at 50% 0%, var(--bg-raised-2), var(--bg-raised) 70%);
+  }
+  @media (max-width: 640px){ .contact-card{ padding: 40px 24px; } }
+  .contact-card h2{ font-family: var(--display); font-weight: 700; font-size: clamp(1.8rem, 4vw, 2.6rem); max-width: 20ch; margin: 0 auto; }
+  .contact-card p{ color: var(--text-dim); margin-top: 16px; max-width: 44ch; margin-left:auto; margin-right:auto; }
+  .contact-links{ display:flex; justify-content:center; gap: 16px; flex-wrap: wrap; margin-top: 36px; }
+
+  footer{ text-align:center; padding: 32px; font-size: 0.82rem; color: var(--text-dim); font-family: var(--mono); }
+  footer a{ color: var(--teal); }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a href="#top" class="nav-mark">A P <span>Abhiram</span> Krishna</a>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false" id="navToggle">&#9776;</button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#about">About</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#education">Education</a></li>
+      <li><a href="#more">More</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <canvas id="node-canvas"></canvas>
+  <div class="wrap hero-inner">
+    <div class="eyebrow"><span class="dot"></span>Data Science &amp; ML · Amrita Vishwa Vidyapeetham</div>
+    <h1>Turning ambiguous specs into structured <em>diagrams</em>, and data into decisions.</h1>
+    <p class="lede">I'm Abhiram — a Computer Applications graduate working at the intersection of NLP, vision-language models, and software modeling, teaching machines to read specifications the way engineers read them: as diagrams.</p>
+    <div class="hero-actions">
+      <a href="#projects" class="btn btn-primary">See the research →</a>
+      <a href="mailto:abhiramkrishna560@gmail.com" class="btn btn-ghost">Get in touch</a>
+    </div>
+  </div>
+  <div class="scroll-cue">SCROLL</div>
+</header>
+
+<section id="about">
+  <div class="wrap">
+    <div class="about-grid">
+      <div class="about-text">
+        <div class="section-head" style="margin-bottom:28px;">
+          <span class="tag">01 · About</span>
+          <h2>A data science graduate who thinks in diagrams</h2>
+        </div>
+        <p>I'm a <strong>Computer Applications graduate specializing in Data Science</strong> at Amrita Vishwa Vidyapeetham, Amritapuri, with an academic foundation across programming, data analysis, and machine learning, and hands-on practice in <strong>Python, SQL, and Java</strong>.</p>
+        <p>Most of my recent work lives at the boundary of <strong>software engineering education and NLP/LLMs</strong> — building systems that turn natural-language requirements and even hand-drawn diagrams into validated UML, so students and engineers get feedback on their modeling the same way a compiler gives feedback on code.</p>
+        <p>Outside research, I organize for the <strong>Amrita Sports Council</strong> and play competitive basketball — which is where most of my decision-making-under-pressure and team-coordination instincts actually come from.</p>
+      </div>
+      <div class="stat-block">
+        <div class="stat"><div class="num">9.47</div><div class="label">CGPA, BCA Data Science</div></div>
+        <div class="stat"><div class="num">1</div><div class="label">IEEE conference paper</div></div>
+        <div class="stat"><div class="num">3</div><div class="label">Active research projects</div></div>
+        <div class="stat"><div class="num">2024–26</div><div class="label">Sports Council Organizer</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="tag">02 · Projects</span>
+      <h2>Research &amp; projects</h2>
+      <p>Three connected threads, each pushing further into automated diagram generation and validation for software engineering education.</p>
+    </div>
+
+    <div class="project-chain">
+
+      <div class="project-node">
+        <div class="project-card">
+          <div class="project-top">
+            <h3>Automated Class Diagram Differencing using Vision Language Models</h3>
+            <span class="project-period">Feb 2026 – Jun 2026</span>
+          </div>
+          <p>An automated UML learning framework using Vision Language Models to analyze and compare image-based class diagrams, detect structural and semantic errors, and provide iterative feedback that improves modeling accuracy and learning outcomes.</p>
+          <div class="project-tags">
+            <span class="tag-pill">Vision Language Models</span>
+            <span class="tag-pill">UML</span>
+            <span class="tag-pill">Python</span>
+          </div>
+          <div class="project-foot">
+            <span class="status-pill wip"><span class="dot"></span>In progress</span>
+            <span class="status-pill wip"><span class="dot"></span>Repo migrating to GitHub soon</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-node">
+        <div class="project-card">
+          <div class="project-top">
+            <h3>Explainable Feedback &amp; Iterative Correction for Spec-to-UML Generation</h3>
+            <span class="project-period">Aug 2025 – Dec 2025</span>
+          </div>
+          <p>An explainable UML validation framework built with Python, LLMs, and PlantUML, giving students iterative feedback to improve modeling accuracy in software engineering education.</p>
+          <div class="project-tags">
+            <span class="tag-pill">LLMs</span>
+            <span class="tag-pill">PlantUML</span>
+            <span class="tag-pill">Python</span>
+            <span class="tag-pill">Explainability</span>
+          </div>
+          <div class="project-foot">
+            <span class="status-pill wip"><span class="dot"></span>Completed</span>
+            <span class="status-pill wip"><span class="dot"></span>Repo migrating to GitHub soon</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-node">
+        <div class="project-card">
+          <div class="project-top">
+            <h3>Semantic Relation Extraction for Use Case Modeling</h3>
+            <span class="project-period">Mar 2025 – Jul 2025</span>
+          </div>
+          <p>An NLP-based system using Python and spaCy that automatically generates use case diagrams from software specifications, built as a learning aid for students. Published as a peer-reviewed conference paper.</p>
+          <div class="project-tags">
+            <span class="tag-pill">spaCy</span>
+            <span class="tag-pill">NLP</span>
+            <span class="tag-pill">PlantUML</span>
+            <span class="tag-pill">Use Case Modeling</span>
+          </div>
+          <div class="project-foot">
+            <span class="status-pill published"><span class="dot"></span>Published — IEEE INDISCON '25, IIT Rourkela</span>
+            <a class="doi-link" href="https://doi.org/10.1109/INDISCON66021.2025.11253567" target="_blank" rel="noopener">View paper (DOI) ↗</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="tag">03 · Skills</span>
+      <h2>What I work with</h2>
+    </div>
+    <div class="skill-clusters">
+      <div class="cluster core">
+        <h3>Data Mining &amp; Machine Learning</h3>
+        <p>Data preprocessing, cleaning, and transformation; frequent pattern mining, classification, and clustering; applying ML to extract insights and support decisions.</p>
+        <div class="node-tags">
+          <span class="node-tag">Classification</span>
+          <span class="node-tag">Clustering</span>
+          <span class="node-tag">Pattern Mining</span>
+          <span class="node-tag">Scikit-Learn</span>
+        </div>
+      </div>
+      <div class="cluster core">
+        <h3>Data Analysis &amp; Visualization</h3>
+        <p>Analyzing datasets and presenting insights through visualizations using Python's data stack.</p>
+        <div class="node-tags">
+          <span class="node-tag">Pandas</span>
+          <span class="node-tag">NumPy</span>
+          <span class="node-tag">Matplotlib</span>
+          <span class="node-tag">Seaborn</span>
+        </div>
+      </div>
+      <div class="cluster core">
+        <h3>DSA &amp; OOP</h3>
+        <p>Object-oriented principles and data structures &amp; algorithms in Python and Java, focused on problem-solving and code reusability.</p>
+        <div class="node-tags">
+          <span class="node-tag">Python</span>
+          <span class="node-tag">Java</span>
+          <span class="node-tag">OOP</span>
+          <span class="node-tag">Algorithms</span>
+        </div>
+      </div>
+      <div class="cluster core">
+        <h3>Database Management</h3>
+        <p>SQL and PL/SQL for database design, querying, and optimization, with hands-on practice on MySQL and PostgreSQL.</p>
+        <div class="node-tags">
+          <span class="node-tag">SQL</span>
+          <span class="node-tag">PL/SQL</span>
+          <span class="node-tag">MySQL</span>
+          <span class="node-tag">PostgreSQL</span>
+        </div>
+      </div>
+      <div class="cluster soft">
+        <h3>Team Collaboration &amp; Management</h3>
+        <p>Leadership and coordination built through playing and managing team-based sports like basketball.</p>
+        <div class="node-tags">
+          <span class="node-tag">Leadership</span>
+          <span class="node-tag">Coordination</span>
+        </div>
+      </div>
+      <div class="cluster soft">
+        <h3>Decision Making &amp; Adaptability</h3>
+        <p>Strengthened through coordinating events, making quick strategic calls in games, and balancing roles as player, organizer, and student.</p>
+        <div class="node-tags">
+          <span class="node-tag">Strategic Thinking</span>
+          <span class="node-tag">Adaptability</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="education">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="tag">04 · Education</span>
+      <h2>Academic background</h2>
+    </div>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-period">Aug 2023 – Aug 2026</div>
+        <div class="tl-body">
+          <h3>Bachelor's in Computer Applications (Spec. in Data Science)</h3>
+          <div class="place">Amrita Vishwa Vidyapeetham, Amritapuri, Kerala</div>
+          <span class="cgpa">CGPA 9.47 · Campus Gold Rank</span>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-period">Jul 2021 – May 2023</div>
+        <div class="tl-body">
+          <h3>Higher Secondary — Computer Science &amp; Mathematics</h3>
+          <div class="place">Navajeevan Bethany Vidyalaya, Kerala</div>
+          <span class="cgpa">CGPA 8.80</span>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-period">Jun 2020 – May 2021</div>
+        <div class="tl-body">
+          <h3>Secondary Education</h3>
+          <div class="place">Navajeevan Bethany Vidyalaya, Kerala</div>
+          <span class="cgpa">CGPA 9.12</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="more">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="tag">05 · More</span>
+      <h2>Achievements, interests &amp; courses</h2>
+    </div>
+    <div class="more-grid">
+      <div class="more-col">
+        <h3>Achievements &amp; organisations</h3>
+        <ul class="achv-list">
+          <li><strong>Certificate of Presentation</strong>6th IEEE India Council International Subsections Conference, organized by IEEE Rourkela Subsection &amp; IEEE India Council, held at NIT Rourkela.</li>
+          <li><strong>Campus Gold Rank</strong>Awarded for the BCA Data Science degree at Amrita Vishwa Vidyapeetham, Amritapuri.</li>
+          <li><strong>Basketball Runner-Up</strong>South Zone Sahodaya 2022 and Inter-Amrita 2024 tournaments.</li>
+          <li><strong>Sports Council Organizer</strong>Amrita Vishwa Vidyapeetham, Amritapuri Sports Council, 2024 – 2026.</li>
+        </ul>
+
+        <div class="courses">
+          <h4>Certificate courses</h4>
+          <div class="course-row"><span>Introduction to Large Language Models — LinkedIn Learning</span><span class="course-date">Jan 2025</span></div>
+          <div class="course-row"><span>Excel Regression Analysis — Great Learning</span><span class="course-date">Nov 2024</span></div>
+          <div class="course-row"><span>Machine Learning — Udemy</span><span class="course-date">Jul 2025</span></div>
+        </div>
+      </div>
+
+      <div class="more-col">
+        <h3>Areas of interest</h3>
+        <div class="interest-list">
+          <div class="interest-item">
+            <h4>Analytics &amp; Visualization</h4>
+            <p>Applying statistical and computational methods to extract and present insights through impactful visual representations.</p>
+          </div>
+          <div class="interest-item">
+            <h4>Large Language Models</h4>
+            <p>Leveraging advanced AI models for text generation, reasoning, and automation tasks.</p>
+          </div>
+          <div class="interest-item">
+            <h4>Natural Language Processing</h4>
+            <p>Exploring techniques for processing and understanding human language through computational methods.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="wrap">
+    <div class="contact-card">
+      <h2>Let's connect the dots.</h2>
+      <p>Open to research collaborations, internships, and conversations about diagrams, LLMs, and everything in between.</p>
+      <div class="contact-links">
+        <a class="btn btn-primary" href="mailto:abhiramkrishna560@gmail.com">Email me ↗</a>
+        <a class="btn btn-ghost" href="tel:+919188577376">+91 9188 577 376</a>
+        <a class="btn btn-ghost" href="https://www.linkedin.com/in/abhiram-krishna-a807772bb" target="_blank" rel="noopener">LinkedIn ↗</a>
+        <a class="btn btn-ghost" href="https://github.com/PeaceLovingGhost" target="_blank" rel="noopener">GitHub ↗</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  Built by A P Abhiram Krishna · <a href="https://github.com/PeaceLovingGhost" target="_blank" rel="noopener">github.com/PeaceLovingGhost</a>
+</footer>
+
+<script>
+  // Mobile nav toggle
+  const navToggle = document.getElementById('navToggle');
+  const navLinks = document.getElementById('navLinks');
+  navToggle.addEventListener('click', () => {
+    const isOpen = navLinks.classList.toggle('open');
+    navToggle.setAttribute('aria-expanded', isOpen);
+  });
+  navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    navLinks.classList.remove('open');
+    navToggle.setAttribute('aria-expanded', 'false');
+  }));
+
+  // Node-graph hero background
+  (function(){
+    const canvas = document.getElementById('node-canvas');
+    const ctx = canvas.getContext('2d');
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let w, h, nodes = [];
+    const NODE_COUNT_BASE = 5200; // density divisor
+
+    function resize(){
+      w = canvas.width = canvas.offsetWidth * devicePixelRatio;
+      h = canvas.height = canvas.offsetHeight * devicePixelRatio;
+      const count = Math.min(70, Math.max(26, Math.floor((w*h)/ (NODE_COUNT_BASE*devicePixelRatio*devicePixelRatio*100))));
+      nodes = Array.from({length: count}, () => ({
+        x: Math.random()*w,
+        y: Math.random()*h,
+        vx: (Math.random()-0.5)*0.25*devicePixelRatio,
+        vy: (Math.random()-0.5)*0.25*devicePixelRatio,
+        r: (Math.random()*1.6+1)*devicePixelRatio
+      }));
+    }
+
+    function draw(){
+      ctx.clearRect(0,0,w,h);
+      const maxDist = 150*devicePixelRatio;
+      for(let i=0;i<nodes.length;i++){
+        const n = nodes[i];
+        if(!reduceMotion){
+          n.x += n.vx; n.y += n.vy;
+          if(n.x < 0 || n.x > w) n.vx *= -1;
+          if(n.y < 0 || n.y > h) n.vy *= -1;
+        }
+        for(let j=i+1;j<nodes.length;j++){
+          const m = nodes[j];
+          const dx = n.x-m.x, dy = n.y-m.y;
+          const dist = Math.sqrt(dx*dx+dy*dy);
+          if(dist < maxDist){
+            ctx.strokeStyle = `rgba(63,220,196,${(1-dist/maxDist)*0.22})`;
+            ctx.lineWidth = 1*devicePixelRatio;
+            ctx.beginPath();
+            ctx.moveTo(n.x,n.y);
+            ctx.lineTo(m.x,m.y);
+            ctx.stroke();
+          }
+        }
+      }
+      for(const n of nodes){
+        ctx.fillStyle = 'rgba(255,182,39,0.55)';
+        ctx.beginPath();
+        ctx.arc(n.x,n.y,n.r,0,Math.PI*2);
+        ctx.fill();
+      }
+      if(!reduceMotion) requestAnimationFrame(draw);
+    }
+
+    window.addEventListener('resize', resize);
+    resize();
+    draw();
+  })();
+</script>
+
+</body>
+</html>
