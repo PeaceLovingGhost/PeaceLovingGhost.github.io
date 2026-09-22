@@ -38,7 +38,27 @@
       padding: 0;
     }
 
+    body::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    body::-webkit-scrollbar-track {
+      background: var(--bg);
+    }
+
+    body::-webkit-scrollbar-thumb {
+      background: var(--coral);
+      border-radius: 10px;
+      border: 2px solid var(--bg);
+    }
+
+    body::-webkit-scrollbar-thumb:hover {
+      background: var(--gold);
+    }
+
     html {
+      scrollbar-width: thin;
+      scrollbar-color: var(--coral) var(--bg);
       scroll-behavior: smooth;
     }
 
@@ -72,7 +92,7 @@
     }
 
     .wrap {
-      max-width: 1120px;
+      max-width: 1500px;
       margin: 0 auto;
       padding: 0 28px;
       position: relative;
@@ -338,7 +358,7 @@
       grid-template-columns: minmax(180px, 0.9fr) minmax(0, 1.8fr);
       gap: 60px;
       align-items: start;
-      max-width: 1120px;
+      max-width: 1300px;
       margin: 0 auto;
       padding: 0 28px;
     }
@@ -416,7 +436,7 @@
       font-size: 1.06rem;
       color: var(--ink-soft);
       margin-bottom: 18px;
-      max-width: 65ch;
+      padding-left: 60px;
       text-align: justify;
       text-justify: inter-word;
       hyphens: auto;
@@ -430,6 +450,8 @@
     }
 
     .about-stats {
+      padding-left: 60px;
+      ;
       display: flex;
       gap: 18px;
       margin-top: 30px;
@@ -504,6 +526,7 @@
     }
 
     .pcard {
+      width: fit-content;
       border-radius: 18px;
       padding: 30px 28px;
       position: relative;
@@ -546,7 +569,7 @@
       max-width: 32ch;
     }
 
-    .pcard.p3 h3{
+    .pcard.p3 h3 {
       max-width: 26ch;
     }
 
@@ -569,6 +592,10 @@
       text-justify: inter-word;
       hyphens: auto;
       -webkit-hyphens: auto;
+    }
+
+    .pcard.p3 p {
+      max-width: 97ch;
     }
 
     .ptags {
@@ -611,13 +638,19 @@
       color: var(--ink);
     }
 
-    .doi {
+    .doi{
       font-weight: 700;
-      font-size: .82rem;
-      text-decoration: underline;
-      text-decoration-color: var(--coral);
-      text-underline-offset: 3px;
       font-family: var(--body);
+      border-radius: 20px;
+      padding: 6px 12px;
+      transition: 0.35s ease;
+      background-color: transparent;
+    }
+
+    .doi:hover{
+      border-radius: 0;
+      transform: rotate(-1deg) scale(1.05);
+      box-shadow: 5px 5px 0 var(--ink);
     }
 
     .skills-head {
@@ -641,10 +674,10 @@
     }
 
     .skills-chip {
-      display: inline-flex;
-      align-items: center;
+      display: flex;
+      width: fit-content;
+      margin: 28px auto 0;
       gap: 12px;
-      margin-top: 22px;
       padding: 10px 18px;
       border-radius: 30px;
       background: var(--ink);
@@ -652,7 +685,6 @@
       font-family: var(--body);
       font-weight: 600;
       font-size: .85rem;
-      transform: rotate(-0.6deg);
     }
 
     .skills-chip .chip-label {
@@ -951,28 +983,28 @@
 
     .board {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 24px;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 32px;
+      padding: 0 6vw;
+      align-items: start;
     }
 
-    @media (max-width:900px) {
+    @media (max-width: 820px) {
       .board {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-
-    @media (max-width:560px) {
-      .board {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 24px;
       }
     }
 
     .note {
-      border-radius: 4px;
-      padding: 24px 22px;
+      border-radius: 18px;
+      padding: 34px 30px 28px;
       position: relative;
-      box-shadow: 0 8px 16px rgba(36, 26, 18, 0.12);
-      font-size: .92rem;
+      border: 1px solid var(--line);
+      box-shadow: 6px 6px 0 rgba(36, 26, 18, 0.1);
+      font-size: .98rem;
+      min-width: 0;
+      overflow-wrap: break-word;
     }
 
     .note::before {
@@ -990,54 +1022,64 @@
     .note h4 {
       font-family: var(--display);
       font-weight: 600;
-      font-size: 1.05rem;
-      margin-bottom: 8px;
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(36, 26, 18, 0.1);
     }
 
     .note p {
       color: var(--ink);
-      opacity: .82;
+      opacity: .85;
       font-family: var(--serif);
+      font-size: .98rem;
+      line-height: 1.55;
+      margin: 0;
     }
 
+    /* Rotations + stagger like skill cards */
     .note:nth-child(1) {
       background: var(--coral-tint);
-      transform: rotate(-2deg);
+      transform: rotate(-1deg);
     }
 
     .note:nth-child(2) {
       background: var(--teal-tint);
-      transform: rotate(1.5deg);
+      transform: rotate(1deg);
+      margin-top: 22px;
     }
 
     .note:nth-child(3) {
       background: var(--gold-tint);
-      transform: rotate(-1deg);
+      transform: rotate(-0.6deg);
     }
 
     .note:nth-child(4) {
       background: var(--magenta-tint);
-      transform: rotate(2deg);
+      transform: rotate(1.2deg);
+      margin-top: 22px;
     }
 
     .note:nth-child(5) {
       background: var(--magenta-tint);
-      transform: rotate(1deg);
+      transform: rotate(-1deg);
     }
 
     .note:nth-child(6) {
       background: var(--gold-tint);
-      transform: rotate(-1.5deg);
+      transform: rotate(1deg);
+      margin-top: 22px;
     }
 
     .note:nth-child(7) {
       background: var(--teal-tint);
-      transform: rotate(1.5deg);
+      transform: rotate(-0.6deg);
     }
 
     .note:nth-child(8) {
       background: var(--coral-tint);
-      transform: rotate(-1.5deg);
+      transform: rotate(1.2deg);
+      margin-top: 22px;
     }
 
     .courses-row {
@@ -1306,21 +1348,18 @@
           <div class="ptags"><span>spaCy</span><span>NLP</span><span>PlantUML</span></div>
           <div class="pfoot">
             <span class="badge">Published · IEEE INDISCON '25</span>
-            <a class="doi" href="https://doi.org/10.1109/INDISCON66021.2025.11253567" target="_blank"
-              rel="noopener">Read the paper ↗</a>
+            <button class="doi"><a href="https://doi.org/10.1109/INDISCON66021.2025.11253567" target="_blank"
+              rel="noopener">Read the paper ↗</a></button>
           </div>
         </div>
       </div>
     </div>
   </section>
 
+
   <section id="skills">
     <div class="skills-head">
       <h2>What I actually do</h2>
-      <p class="skills-chip">
-        <span class="chip-label">Currently exploring</span>
-        Agentic workflows · Model evaluation · Retrieval-augmented reasoning · Interpretability
-      </p>
     </div>
     <div class="skill-cards">
       <article class="skill-card sc-1">
@@ -1340,7 +1379,8 @@
       <article class="skill-card sc-2">
         <span class="sc-num" aria-hidden="true">02</span>
         <h3 class="sc-label">Software &amp; Development</h3>
-        <p class="sc-copy">Python and Java for building things, SQL · PL/SQL for talking to data, PostgreSQL and MySQL for
+        <p class="sc-copy">Python and Java for building things, SQL · PL/SQL for talking to data, PostgreSQL and MySQL
+          for
           storing it. I care about code other students can read and extend - half my work is educational tooling, so
           clarity isn't optional.</p>
         <ul class="sc-tools">
@@ -1370,7 +1410,8 @@
       <article class="skill-card sc-4">
         <span class="sc-num" aria-hidden="true">04</span>
         <h3 class="sc-label">Beyond The Keyboard</h3>
-        <p class="sc-copy">Organizing for the Amrita Sports Council and playing competitive basketball aren't mere decoration -
+        <p class="sc-copy">Organizing for the Amrita Sports Council and playing competitive basketball aren't mere
+          decoration -
           they're where I learned to make decisions under pressure and lead without a title.</p>
         <ul class="sc-tools">
           <li>Team leadership</li>
@@ -1379,6 +1420,10 @@
         </ul>
       </article>
     </div>
+    <p class="skills-chip">
+      <span class="chip-label">Currently exploring</span>
+      Agentic workflows · Model evaluation · Retrieval-augmented reasoning · Interpretability
+    </p>
   </section>
 
   <section id="education">
@@ -1413,41 +1458,39 @@
 
   <section id="more">
     <h2>Beyond the coursework</h2>
-    <div class="wrap">
-      <div class="board">
-        <div class="note">
-          <h4>Certificate of Presentation</h4>
-          <p>6th IEEE India Council International Subsections Conference, held at NIT Rourkela, organized by IEEE
-            Rourkela Subsection &amp; IEEE India Council.</p>
-        </div>
-        <div class="note">
-          <h4>Campus Gold</h4>
-          <p>Awarded for the BCA Data Science degree at Amrita Vishwa Vidyapeetham, Amritapuri.</p>
-        </div>
-        <div class="note">
-          <h4>Analytics &amp; Visualization</h4>
-          <p>Applying statistical and computational methods to present insights through impactful visuals.</p>
-        </div>
-        <div class="note">
-          <h4>Large Language Models</h4>
-          <p>Leveraging advanced AI models for text generation, reasoning, and automation tasks.</p>
-        </div>
-        <div class="note">
-          <h4>Natural Language Processing</h4>
-          <p>Exploring techniques for processing and understanding human language computationally.</p>
-        </div>
-        <div class="note">
-          <h4>Prompt Engineering</h4>
-          <p>Crafting precise context and strategies to optimize LLM outputs for complex workflows.</p>
-        </div>
-        <div class="note">
-          <h4>Basketball Runner-Up</h4>
-          <p>South Zone Sahodaya 2022 and Inter-Amrita 2024 tournaments.</p>
-        </div>
-        <div class="note">
-          <h4>Sports Council Organizer</h4>
-          <p>Amrita Vishwa Vidyapeetham, Amritapuri Sports Council, 2024 – 2026.</p>
-        </div>
+    <div class="board">
+      <div class="note">
+        <h4>Certificate of Presentation</h4>
+        <p>6th IEEE India Council International Subsections Conference, held at NIT Rourkela, organized by IEEE
+          Rourkela Subsection &amp; IEEE India Council.</p>
+      </div>
+      <div class="note">
+        <h4>Campus Gold</h4>
+        <p>Awarded for the BCA Data Science degree at Amrita Vishwa Vidyapeetham, Amritapuri.</p>
+      </div>
+      <div class="note">
+        <h4>Analytics &amp; Visualization</h4>
+        <p>Applying statistical and computational methods to present insights through impactful visuals.</p>
+      </div>
+      <div class="note">
+        <h4>Large Language Models</h4>
+        <p>Leveraging advanced AI models for text generation, reasoning, and automation tasks.</p>
+      </div>
+      <div class="note">
+        <h4>Natural Language Processing</h4>
+        <p>Exploring techniques for processing and understanding human language computationally.</p>
+      </div>
+      <div class="note">
+        <h4>Prompt Engineering</h4>
+        <p>Crafting precise context and strategies to optimize LLM outputs for complex workflows.</p>
+      </div>
+      <div class="note">
+        <h4>Basketball Runner-Up</h4>
+        <p>South Zone Sahodaya 2022 and Inter-Amrita 2024 tournaments.</p>
+      </div>
+      <div class="note">
+        <h4>Sports Council Organizer</h4>
+        <p>Amrita Vishwa Vidyapeetham, Amritapuri Sports Council, 2024 – 2026.</p>
       </div>
     </div>
   </section>
