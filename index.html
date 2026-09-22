@@ -1,612 +1,1717 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>A P Abhiram Krishna — Data Science &amp; ML</title>
-<meta name="description" content="Portfolio of A P Abhiram Krishna — Data Science, Machine Learning, and UML/diagram automation research.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --bg: #1B1030;
-    --bg-raised: #241640;
-    --bg-raised-2: #2B1B4D;
-    --marigold: #FFB627;
-    --teal: #3FDCC4;
-    --text: #F3EEFA;
-    --text-dim: #B6A9D1;
-    --line: rgba(243,238,250,0.12);
-    --line-strong: rgba(243,238,250,0.22);
-    --display: 'Space Grotesk', sans-serif;
-    --body: 'Inter', sans-serif;
-    --mono: 'JetBrains Mono', monospace;
-  }
-
-  *{ box-sizing: border-box; margin:0; padding:0; }
-
-  html{ scroll-behavior: smooth; }
-
-  body{
-    background: var(--bg);
-    color: var(--text);
-    font-family: var(--body);
-    line-height: 1.6;
-    overflow-x: hidden;
-  }
-
-  @media (prefers-reduced-motion: reduce){
-    html{ scroll-behavior: auto; }
-    *{ animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
-  }
-
-  a{ color: inherit; text-decoration: none; }
-  a:focus-visible, button:focus-visible{ outline: 2px solid var(--teal); outline-offset: 3px; border-radius: 2px; }
-
-  .wrap{ max-width: 1080px; margin: 0 auto; padding: 0 32px; }
-
-  /* ---------- Nav ---------- */
-  nav{
-    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-    background: rgba(27,16,48,0.82);
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid var(--line);
-  }
-  nav .wrap{ display:flex; align-items:center; justify-content: space-between; height: 64px; }
-  .nav-mark{ font-family: var(--display); font-weight: 700; font-size: 1.05rem; letter-spacing: 0.02em; }
-  .nav-mark span{ color: var(--marigold); }
-  .nav-links{ display:flex; gap: 28px; list-style:none; }
-  .nav-links a{ font-size: 0.92rem; color: var(--text-dim); transition: color 0.2s; position: relative; }
-  .nav-links a:hover{ color: var(--text); }
-  .nav-toggle{ display:none; background:none; border:none; color: var(--text); font-size: 1.4rem; cursor:pointer; }
-
-  @media (max-width: 760px){
-    .nav-links{
-      position: absolute; top: 64px; left:0; right:0;
-      flex-direction: column; gap:0;
-      background: var(--bg-raised);
-      border-bottom: 1px solid var(--line);
-      max-height: 0; overflow: hidden; transition: max-height 0.3s ease;
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portfolio - A P Abhiram Krishna</title>
+  <meta name="description" content="Portfolio of A P Abhiram Krishna - data scientist, NLP & UML researcher.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500;1,9..144,600&family=Work+Sans:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg: #F6EEDC;
+      --bg-card: #EFE2C4;
+      --bg-card-2: #F1E7CE;
+      --ink: #241A12;
+      --ink-soft: #7A6A54;
+      --coral: #FF5A3C;
+      --coral-tint: #FFD9CC;
+      --teal: #0FA89C;
+      --teal-tint: #C9EEE9;
+      --magenta: #D62E82;
+      --magenta-tint: #F7D2E5;
+      --gold: #E8951A;
+      --gold-tint: #FBE3B8;
+      --line: rgba(36, 26, 18, 0.14);
+      --display: 'Fraunces', serif;
+      --body: 'Work Sans', sans-serif;
+      --serif: 'Lora', serif;
     }
-    .nav-links.open{ max-height: 400px; }
-    .nav-links a{ display:block; padding: 16px 32px; border-top: 1px solid var(--line); }
-    .nav-toggle{ display:block; }
-  }
 
-  /* ---------- Hero ---------- */
-  .hero{
-    position: relative;
-    min-height: 100vh;
-    display:flex; flex-direction:column; justify-content:center;
-    padding-top: 64px;
-    overflow: hidden;
-  }
-  #node-canvas{ position:absolute; inset:0; width:100%; height:100%; opacity: 0.55; }
-  .hero-inner{ position:relative; z-index:2; }
-  .hero .eyebrow{
-    font-family: var(--mono); font-size: 0.82rem; color: var(--teal);
-    margin-bottom: 22px; display:flex; align-items:center; gap: 10px;
-  }
-  .eyebrow .dot{ width:6px; height:6px; border-radius:50%; background: var(--teal); box-shadow: 0 0 8px var(--teal); }
-  .hero h1{
-    font-family: var(--display); font-weight: 700;
-    font-size: clamp(2.4rem, 6vw, 4.4rem);
-    line-height: 1.05;
-    max-width: 15ch;
-    letter-spacing: -0.01em;
-  }
-  .hero h1 em{ font-style: normal; color: var(--marigold); }
-  .hero p.lede{
-    margin-top: 26px; max-width: 56ch;
-    font-size: 1.1rem; color: var(--text-dim);
-  }
-  .hero-actions{ margin-top: 38px; display:flex; gap: 16px; flex-wrap: wrap; }
-  .btn{
-    font-family: var(--body); font-weight: 600; font-size: 0.95rem;
-    padding: 13px 26px; border-radius: 8px; border: 1px solid transparent;
-    cursor: pointer; transition: transform 0.15s ease, background 0.2s, border-color 0.2s;
-    display:inline-flex; align-items:center; gap:8px;
-  }
-  .btn-primary{ background: var(--marigold); color: #1B1030; }
-  .btn-primary:hover{ transform: translateY(-2px); }
-  .btn-ghost{ border-color: var(--line-strong); color: var(--text); }
-  .btn-ghost:hover{ border-color: var(--teal); color: var(--teal); transform: translateY(-2px); }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-  .scroll-cue{
-    position:absolute; bottom: 34px; left: 32px; z-index:2;
-    font-family: var(--mono); font-size: 0.72rem; color: var(--text-dim);
-    display:flex; align-items:center; gap:10px;
-  }
-  .scroll-cue::before{ content:''; width:26px; height:1px; background: var(--line-strong); }
+    html {
+      scroll-behavior: smooth;
+    }
 
-  /* ---------- Section shells ---------- */
-  section{ padding: 120px 0; position: relative; }
-  .section-head{ margin-bottom: 56px; max-width: 62ch; }
-  .section-head .tag{ font-family: var(--mono); font-size: 0.8rem; color: var(--teal); margin-bottom: 14px; display:block; }
-  .section-head h2{ font-family: var(--display); font-weight: 600; font-size: clamp(1.8rem, 3.4vw, 2.6rem); }
-  .section-head p{ margin-top: 16px; color: var(--text-dim); font-size: 1.02rem; max-width: 58ch; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--body);
+      line-height: 1.6;
+    }
 
-  /* ---------- About ---------- */
-  #about{ border-top: 1px solid var(--line); }
-  .about-grid{ display:grid; grid-template-columns: 1.3fr 1fr; gap: 64px; align-items:start; }
-  @media (max-width: 800px){ .about-grid{ grid-template-columns: 1fr; gap: 40px; } }
-  .about-text p{ color: var(--text-dim); font-size: 1.04rem; margin-bottom: 18px; }
-  .about-text strong{ color: var(--text); font-weight: 600; }
-  .stat-block{ display:grid; grid-template-columns: 1fr 1fr; gap: 24px; }
-  .stat{
-    border: 1px solid var(--line); border-radius: 12px; padding: 22px 20px;
-    background: linear-gradient(160deg, var(--bg-raised), transparent);
-  }
-  .stat .num{ font-family: var(--display); font-size: 1.8rem; font-weight: 700; color: var(--marigold); }
-  .stat .label{ font-size: 0.85rem; color: var(--text-dim); margin-top: 6px; }
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
 
-  /* ---------- Projects (node chain) ---------- */
-  #projects{ border-top: 1px solid var(--line); }
-  .project-chain{ position: relative; }
-  .project-chain::before{
-    content:''; position:absolute; left: 11px; top: 14px; bottom: 14px; width: 1px;
-    background: linear-gradient(var(--teal), var(--marigold));
-    opacity: 0.35;
-  }
-  .project-node{ position: relative; padding-left: 52px; margin-bottom: 44px; }
-  .project-node:last-child{ margin-bottom: 0; }
-  .project-node::before{
-    content:''; position:absolute; left: 5px; top: 8px; width: 13px; height:13px; border-radius:50%;
-    background: var(--bg); border: 2px solid var(--teal);
-    box-shadow: 0 0 0 4px var(--bg);
-  }
-  .project-card{
-    border: 1px solid var(--line); border-radius: 14px; padding: 30px 32px;
-    background: var(--bg-raised); transition: border-color 0.2s, transform 0.2s;
-  }
-  .project-card:hover{ border-color: var(--line-strong); transform: translateY(-3px); }
-  .project-top{ display:flex; justify-content: space-between; align-items:flex-start; gap: 20px; flex-wrap: wrap; }
-  .project-card h3{ font-family: var(--display); font-size: 1.28rem; font-weight: 600; max-width: 46ch; }
-  .project-period{ font-family: var(--mono); font-size: 0.78rem; color: var(--text-dim); white-space: nowrap; padding-top: 4px; }
-  .project-card p{ color: var(--text-dim); margin-top: 14px; max-width: 68ch; }
-  .project-tags{ display:flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
-  .tag-pill{
-    font-family: var(--mono); font-size: 0.74rem; padding: 5px 11px; border-radius: 20px;
-    border: 1px solid var(--line-strong); color: var(--text-dim);
-  }
-  .project-foot{ margin-top: 20px; display:flex; align-items:center; gap: 14px; flex-wrap: wrap; }
-  .status-pill{
-    font-family: var(--mono); font-size: 0.74rem; padding: 6px 12px; border-radius: 20px;
-    display:inline-flex; align-items:center; gap:7px;
-  }
-  .status-pill.wip{ background: rgba(255,182,39,0.12); color: var(--marigold); }
-  .status-pill.published{ background: rgba(63,220,196,0.12); color: var(--teal); }
-  .status-pill .dot{ width:6px; height:6px; border-radius:50%; background: currentColor; }
-  .doi-link{ font-family: var(--mono); font-size: 0.78rem; color: var(--teal); border-bottom: 1px solid transparent; }
-  .doi-link:hover{ border-color: var(--teal); }
+      * {
+        animation-duration: .001ms !important;
+        transition-duration: .001ms !important;
+      }
+    }
 
-  /* ---------- Skills ---------- */
-  #skills{ border-top: 1px solid var(--line); }
-  .skill-clusters{ display:grid; grid-template-columns: repeat(2, 1fr); gap: 28px; }
-  @media (max-width: 720px){ .skill-clusters{ grid-template-columns: 1fr; } }
-  .cluster{ border: 1px solid var(--line); border-radius: 14px; padding: 26px 26px 22px; }
-  .cluster h3{ font-family: var(--display); font-size: 1.08rem; font-weight: 600; margin-bottom: 10px; }
-  .cluster p{ color: var(--text-dim); font-size: 0.92rem; margin-bottom: 16px; }
-  .node-tags{ display:flex; flex-wrap:wrap; gap: 8px; }
-  .node-tag{
-    font-family: var(--mono); font-size: 0.76rem; padding: 6px 12px;
-    border-radius: 6px; background: var(--bg-raised-2); color: var(--text);
-    border: 1px solid var(--line);
-  }
-  .cluster.soft h3{ color: var(--teal); }
-  .cluster.core h3{ color: var(--marigold); }
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
 
-  /* ---------- Timeline (education) ---------- */
-  #education{ border-top: 1px solid var(--line); }
-  .timeline{ display:flex; flex-direction: column; gap: 0; }
-  .tl-item{ display:grid; grid-template-columns: 200px 1fr; gap: 28px; padding: 26px 0; border-bottom: 1px solid var(--line); }
-  .tl-item:last-child{ border-bottom:none; }
-  @media (max-width: 640px){ .tl-item{ grid-template-columns: 1fr; gap: 6px; } }
-  .tl-period{ font-family: var(--mono); font-size: 0.82rem; color: var(--teal); }
-  .tl-body h3{ font-family: var(--display); font-size: 1.08rem; font-weight: 600; }
-  .tl-body .place{ color: var(--text-dim); font-size: 0.92rem; margin-top: 4px; }
-  .tl-body .cgpa{ font-family: var(--mono); font-size: 0.8rem; color: var(--marigold); margin-top: 8px; display:inline-block; }
+    a:focus-visible,
+    button:focus-visible {
+      outline: 2px solid var(--coral);
+      outline-offset: 3px;
+    }
 
-  /* ---------- Achievements / interests / orgs ---------- */
-  #more{ border-top: 1px solid var(--line); }
-  .more-grid{ display:grid; grid-template-columns: 1fr 1fr; gap: 56px; }
-  @media (max-width: 800px){ .more-grid{ grid-template-columns: 1fr; gap: 40px; } }
-  .more-col h3{ font-family: var(--display); font-size: 1.1rem; font-weight: 600; margin-bottom: 20px; color: var(--marigold); }
-  .achv-list{ list-style:none; display:flex; flex-direction: column; gap: 18px; }
-  .achv-list li{ padding-left: 20px; position: relative; color: var(--text-dim); font-size: 0.96rem; }
-  .achv-list li::before{ content:'—'; position:absolute; left:0; color: var(--teal); }
-  .achv-list strong{ color: var(--text); display:block; font-weight: 600; margin-bottom: 2px; }
-  .interest-list{ display:flex; flex-direction: column; gap: 20px; }
-  .interest-item h4{ font-family: var(--display); font-size: 1rem; font-weight: 600; }
-  .interest-item p{ color: var(--text-dim); font-size: 0.92rem; margin-top: 4px; }
+    .wrap {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 28px;
+      position: relative;
+    }
 
-  .courses{ margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--line); }
-  .courses h4{ font-family: var(--display); font-size: 1rem; font-weight: 600; margin-bottom: 14px; color: var(--marigold); }
-  .course-row{ display:flex; justify-content: space-between; gap: 16px; padding: 10px 0; font-size: 0.9rem; color: var(--text-dim); border-bottom: 1px solid var(--line); }
-  .course-row:last-child{ border-bottom:none; }
-  .course-row .course-date{ font-family: var(--mono); font-size: 0.78rem; white-space: nowrap; }
+    em {
+      font-style: italic;
+      font-family: var(--display);
+      color: var(--coral);
+    }
 
-  /* ---------- Contact ---------- */
-  #contact{ border-top: 1px solid var(--line); padding-bottom: 100px; }
-  .contact-card{
-    border: 1px solid var(--line-strong); border-radius: 20px;
-    padding: 56px 48px; text-align: center;
-    background: radial-gradient(circle at 50% 0%, var(--bg-raised-2), var(--bg-raised) 70%);
-  }
-  @media (max-width: 640px){ .contact-card{ padding: 40px 24px; } }
-  .contact-card h2{ font-family: var(--display); font-weight: 700; font-size: clamp(1.8rem, 4vw, 2.6rem); max-width: 20ch; margin: 0 auto; }
-  .contact-card p{ color: var(--text-dim); margin-top: 16px; max-width: 44ch; margin-left:auto; margin-right:auto; }
-  .contact-links{ display:flex; justify-content:center; gap: 16px; flex-wrap: wrap; margin-top: 36px; }
+    .top-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 200;
+      padding: 20px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: transparent;
+      border-bottom: 1px solid transparent;
+      transition: background-color .45s ease, border-color .45s ease, backdrop-filter .45s ease, padding .3s ease;
+    }
 
-  footer{ text-align:center; padding: 32px; font-size: 0.82rem; color: var(--text-dim); font-family: var(--mono); }
-  footer a{ color: var(--teal); }
-</style>
+    .top-bar.scrolled {
+      background: rgba(246, 238, 220, 0.55);
+      border-bottom: 1px solid rgba(36, 26, 18, 0.08);
+      backdrop-filter: blur(18px) saturate(160%);
+      -webkit-backdrop-filter: blur(18px) saturate(160%);
+    }
+
+    .mark {
+      font-family: var(--display);
+      font-weight: 600;
+      font-size: 1.15rem;
+    }
+
+    .mark span {
+      color: var(--coral);
+      font-style: italic;
+    }
+
+    .quick-contact {
+      font-family: var(--body);
+      font-weight: 700;
+      font-size: .85rem;
+      padding: 10px 20px;
+      border-radius: 30px;
+      background: var(--ink);
+      color: #fff;
+      border: 1px solid var(--ink);
+      box-shadow: 3px 3px 0 var(--coral);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: border-radius .35s cubic-bezier(.4, 0, .2, 1), transform .35s cubic-bezier(.4, 0, .2, 1),
+        background-color .35s ease, color .35s ease, border-color .35s ease, box-shadow .35s ease;
+    }
+
+    .quick-contact:hover {
+      background: var(--coral);
+      border-color: var(--ink);
+      color: #000;
+      border-radius: 0;
+      transform: rotate(-3deg) scale(1.05);
+      box-shadow: 5px 5px 0 var(--ink);
+    }
+
+    .hero {
+      min-height: 100vh;
+      position: relative;
+      display: flex;
+      align-items: center;
+      padding: 160px 0 60px;
+      overflow: hidden;
+    }
+
+    #heroCanvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .hero .wrap {
+      z-index: 1;
+    }
+
+    .hero h1 {
+      font-family: var(--display);
+      font-weight: 600;
+      font-size: clamp(2.6rem, 7vw, 5.2rem);
+      line-height: 1.02;
+      margin-top: 18px;
+      max-width: 15ch;
+      margin-left: 4vw;
+    }
+
+    @media (max-width: 800px) {
+      .hero h1 {
+        margin-left: 0;
+      }
+
+      .hero-sub {
+        margin-left: 0;
+        margin-top: 28px;
+      }
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 14px;
+      margin-top: 46px;
+      margin-left: 4vw;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width:800px) {
+      .hero-actions {
+        margin-left: 0;
+      }
+    }
+
+    .btn {
+      font-family: var(--body);
+      font-weight: 700;
+      font-size: .92rem;
+      padding: 13px 26px;
+      border-radius: 40px;
+      border: 2px solid var(--ink);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: .35s ease;
+    }
+
+    .btn-solid {
+      background: var(--ink);
+      color: var(--bg);
+    }
+
+    .btn-outline {
+      color: var(--ink);
+    }
+
+    .btn-solid:hover {
+      transform: scale(1.07);
+      color: var(--ink);
+      border-radius: 0;
+      background-color: transparent;
+      border: 2px solid var(--ink);
+    }
+
+    .btn-outline:hover {
+      transform: scale(1.1);
+      background: var(--ink);
+      color: var(--bg);
+      border-radius: 0;
+      border: 2px solid var(--ink);
+    }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 36px;
+      left: 4vw;
+      font-size: .75rem;
+      color: var(--ink-soft);
+      font-weight: 600;
+    }
+
+    @media (max-width:800px) {
+      .scroll-hint {
+        left: 28px;
+      }
+    }
+
+    .story-wrap {
+      height: 220vh;
+      position: relative;
+    }
+
+    .story-sticky {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(180deg, var(--bg), #F1E5CB);
+    }
+
+    #storyCanvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .story-cap {
+      position: absolute;
+      max-width: 30ch;
+      font-family: var(--display);
+      font-weight: 500;
+      font-size: clamp(1.3rem, 3vw, 2rem);
+      opacity: 0;
+      transition: opacity .3s ease;
+      pointer-events: none;
+    }
+
+    .cap-1 {
+      bottom: 50%;
+      right: 6%;
+      text-align: center;
+    }
+
+    .cap-2 {
+      top: 50%;
+      left: 5%;
+      text-align: center;
+    }
+
+    .cap-3 {
+      top: 44%;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+    }
+
+    @media (max-width:700px) {
+      .story-cap {
+        font-size: 1.1rem;
+        max-width: 22ch;
+      }
+
+      .cap-1 {
+        left: 5%;
+        top: 10%;
+      }
+
+      .cap-2 {
+        right: 5%;
+        bottom: 10%;
+      }
+    }
+
+    section {
+      padding: 110px 0;
+      position: relative;
+    }
+
+    .divider {
+      width: 100%;
+      height: 40px;
+    }
+
+    #about .wrap {
+      display: grid;
+      grid-template-columns: minmax(180px, 0.9fr) minmax(0, 1.8fr);
+      gap: 60px;
+      align-items: start;
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 28px;
+    }
+
+    @media (max-width: 860px) {
+      #about .wrap {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+    }
+
+    .about-side {
+      position: static;
+      top: 140px;
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+      padding-top: 6px;
+    }
+
+    @media (max-width: 860px) {
+      .about-side {
+        position: static;
+      }
+    }
+
+    .about-label {
+      font-family: var(--display);
+      font-style: italic;
+      font-weight: 600;
+      font-size: 1.35rem;
+      color: var(--coral);
+      letter-spacing: .02em;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .about-facts {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      margin: 0;
+      padding: 0;
+    }
+
+    .about-facts li {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      font-family: var(--serif);
+      font-size: .95rem;
+      color: var(--ink);
+    }
+
+    .about-facts li span {
+      font-family: var(--body);
+      font-weight: 600;
+      font-size: .68rem;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      color: var(--ink-soft);
+    }
+
+    .about-copy h2 {
+      font-family: var(--display);
+      font-weight: 600;
+      font-size: clamp(1.9rem, 3.6vw, 2.7rem);
+      margin-bottom: 22px;
+      text-align: left;
+    }
+
+    .about-copy p {
+      font-family: var(--serif);
+      font-size: 1.06rem;
+      color: var(--ink-soft);
+      margin-bottom: 18px;
+      max-width: 65ch;
+      text-align: justify;
+      text-justify: inter-word;
+      hyphens: auto;
+      -webkit-hyphens: auto;
+    }
+
+    .about-copy p strong {
+      color: var(--ink);
+      font-weight: 600;
+      font-family: var(--display);
+    }
+
+    .about-stats {
+      display: flex;
+      gap: 18px;
+      margin-top: 30px;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+    }
+
+    .stat-chip {
+      background: var(--teal);
+      color: #fff;
+      padding: 12px 20px;
+      border-radius: 16px;
+      font-family: var(--display);
+      font-weight: 600;
+      text-align: center;
+      transform: rotate(-2deg);
+    }
+
+    .stat-chip:nth-child(2) {
+      background: var(--coral);
+      transform: rotate(2deg);
+    }
+
+    .stat-chip:nth-child(3) {
+      background: var(--magenta);
+      transform: rotate(-1deg);
+    }
+
+    .stat-chip:nth-child(4) {
+      background: var(--gold);
+      transform: rotate(1.5deg);
+    }
+
+    .stat-chip .n {
+      display: block;
+      font-size: 1.3rem;
+    }
+
+    .stat-chip .l {
+      display: block;
+      font-size: .65rem;
+      font-weight: 500;
+      opacity: .9;
+    }
+
+    #projects {
+      background: var(--bg-card-2);
+    }
+
+    .proj-head {
+      margin-bottom: 60px;
+      margin-left: 6vw;
+    }
+
+    .proj-head h2 {
+      font-family: var(--display);
+      font-weight: 600;
+      font-size: clamp(2rem, 4vw, 3rem);
+      max-width: 16ch;
+    }
+
+    .collage {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 26px;
+    }
+
+    @media (max-width:900px) {
+      .collage {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .pcard {
+      border-radius: 18px;
+      padding: 30px 28px;
+      position: relative;
+      box-shadow: 6px 6px 0 rgba(36, 26, 18, 0.1);
+      border: 1px solid var(--line);
+    }
+
+    .pcard.p1 {
+      grid-column: 1 / 5;
+      transform: rotate(-1.1deg);
+      background: var(--coral-tint);
+    }
+
+    .pcard.p2 {
+      grid-column: 3 / 7;
+      margin-top: 50px;
+      transform: rotate(1deg);
+      background: var(--teal-tint);
+    }
+
+    .pcard.p3 {
+      grid-column: 1 / 6;
+      margin-top: 40px;
+      transform: rotate(-0.6deg);
+      background: var(--gold-tint);
+    }
+
+    @media (max-width:900px) {
+      .pcard {
+        grid-column: 1/-1 !important;
+        margin-top: 0 !important;
+        transform: none !important;
+      }
+    }
+
+    .pcard h3 {
+      font-family: var(--display);
+      font-weight: 600;
+      font-size: 1.35rem;
+      max-width: 32ch;
+    }
+
+    .pcard.p3 h3{
+      max-width: 26ch;
+    }
+
+    .pcard .period {
+      font-family: var(--body);
+      font-weight: 600;
+      font-size: .78rem;
+      color: var(--ink-soft);
+      margin-top: 6px;
+      display: block;
+    }
+
+    .pcard p {
+      font-family: var(--serif);
+      margin-top: 16px;
+      color: var(--ink);
+      opacity: .85;
+      font-size: .98rem;
+      text-align: justify;
+      text-justify: inter-word;
+      hyphens: auto;
+      -webkit-hyphens: auto;
+    }
+
+    .ptags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 18px;
+    }
+
+    .ptags span {
+      background: rgba(36, 26, 18, 0.08);
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: .75rem;
+      font-weight: 600;
+      font-family: var(--body);
+    }
+
+    .pfoot {
+      margin-top: 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      font-size: .75rem;
+      font-weight: 700;
+      padding: 6px 12px;
+      border-radius: 20px;
+      background: var(--ink);
+      color: var(--bg);
+      font-family: var(--body);
+    }
+
+    .badge.alt {
+      background: transparent;
+      border: 1.5px solid var(--ink);
+      color: var(--ink);
+    }
+
+    .doi {
+      font-weight: 700;
+      font-size: .82rem;
+      text-decoration: underline;
+      text-decoration-color: var(--coral);
+      text-underline-offset: 3px;
+      font-family: var(--body);
+    }
+
+    .skills-head {
+      margin: 10px 6vw 50px;
+      max-width: 1120px;
+    }
+
+    .skills-head h2 {
+      font-family: var(--display);
+      font-weight: 600;
+      font-size: clamp(2rem, 4vw, 3rem);
+      max-width: 16ch;
+    }
+
+    .skills-sub {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 1.05rem;
+      color: var(--ink-soft);
+      margin-top: 10px;
+    }
+
+    .skills-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 22px;
+      padding: 10px 18px;
+      border-radius: 30px;
+      background: var(--ink);
+      color: var(--bg);
+      font-family: var(--body);
+      font-weight: 600;
+      font-size: .85rem;
+      transform: rotate(-0.6deg);
+    }
+
+    .skills-chip .chip-label {
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      font-size: .68rem;
+    }
+
+    .skill-cards {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 28px;
+      padding: 0 6vw;
+    }
+
+    @media (max-width: 820px) {
+      .skill-cards {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .skill-card {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      padding: 34px 28px 28px;
+      border-radius: 18px;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      box-shadow: 6px 6px 0 rgba(36, 26, 18, 0.1);
+    }
+
+    @media (max-width: 820px) {
+      .skill-card {
+        transform: none !important;
+      }
+    }
+
+    .sc-1 {
+      background: var(--coral-tint);
+      transform: rotate(-1deg);
+    }
+
+    .sc-2 {
+      background: var(--teal-tint);
+      transform: rotate(1deg);
+      margin-top: 22px;
+    }
+
+    .sc-3 {
+      background: var(--gold-tint);
+      transform: rotate(-0.6deg);
+    }
+
+    .sc-4 {
+      background: var(--magenta-tint);
+      transform: rotate(1.2deg);
+      margin-top: 22px;
+    }
+
+    .sc-num {
+      position: absolute;
+      top: -1.4rem;
+      left: -0.4rem;
+      font-family: var(--display);
+      font-weight: 700;
+      font-size: 7rem;
+      line-height: 1;
+      color: rgba(36, 26, 18, 0.07);
+      pointer-events: none;
+      user-select: none;
+      z-index: 0;
+    }
+
+    .skill-card>*:not(.sc-num) {
+      position: relative;
+      z-index: 1;
+    }
+
+    .sc-label {
+      font-family: var(--display);
+      font-weight: 600;
+      font-size: 1.25rem;
+      color: var(--ink);
+      margin: 0;
+      letter-spacing: .01em;
+    }
+
+    .sc-copy {
+      font-family: var(--serif);
+      font-size: .98rem;
+      line-height: 1.55;
+      color: var(--ink);
+      opacity: .85;
+      margin: 0;
+      text-align: left;
+      hyphens: auto;
+      -webkit-hyphens: auto;
+    }
+
+    .sc-tools {
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: auto 0 0;
+      padding: 14px 0 0;
+      border-top: 1px solid rgba(36, 26, 18, 0.1);
+    }
+
+    .sc-tools li {
+      font-family: var(--body);
+      font-weight: 600;
+      font-size: .78rem;
+      padding: 5px 12px;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.5);
+      border: 1px solid rgba(36, 26, 18, 0.08);
+    }
+
+    .sc-tools li:nth-child(odd) {
+      transform: rotate(-1.5deg);
+    }
+
+    .sc-tools li:nth-child(even) {
+      transform: rotate(1.5deg);
+    }
+
+    @media (max-width:820px) {
+      .cloud-groups {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .cloud-group {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 28px 26px;
+      border-radius: 18px;
+      position: relative;
+      box-shadow: 6px 6px 0 rgba(36, 26, 18, 0.1);
+      border: 1px solid var(--line);
+    }
+
+    .cloud-group .glabel {
+      font-family: var(--display);
+      font-style: italic;
+      font-weight: 600;
+      font-size: 1.3rem;
+      color: var(--ink);
+      margin: 0;
+    }
+
+    .cloud-group .tagrow {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .cloud-group span.tag {
+      font-family: var(--body);
+      font-weight: 600;
+      padding: 7px 15px;
+      border-radius: 30px;
+      font-size: .88rem;
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.5);
+      border: 1px solid rgba(36, 26, 18, 0.08);
+    }
+
+    .cloud-group span.tag:nth-child(odd) {
+      transform: rotate(-1.5deg);
+    }
+
+    .cloud-group span.tag:nth-child(even) {
+      transform: rotate(1.5deg);
+    }
+
+    .cloud-group:nth-child(1) {
+      background: var(--coral-tint);
+      transform: rotate(-1deg);
+    }
+
+    .cloud-group:nth-child(2) {
+      background: var(--teal-tint);
+      transform: rotate(1deg);
+      margin-top: 22px;
+    }
+
+    .cloud-group:nth-child(3) {
+      background: var(--gold-tint);
+      transform: rotate(-0.6deg);
+    }
+
+    .cloud-group:nth-child(4) {
+      background: var(--magenta-tint);
+      transform: rotate(1.2deg);
+      margin-top: 22px;
+    }
+
+    @media (max-width:820px) {
+
+      .cloud-group:nth-child(2),
+      .cloud-group:nth-child(4) {
+        margin-top: 0;
+      }
+    }
+
+    #education {
+      background: var(--bg-card);
+    }
+
+    #education h2 {
+      font-family: var(--display);
+      font-weight: 600;
+      font-size: clamp(2rem, 4vw, 3rem);
+      margin-bottom: 60px;
+      margin-left: 6vw;
+      max-width: 16ch;
+    }
+
+    .edu-row {
+      display: flex;
+      align-items: baseline;
+      gap: 40px;
+      margin-bottom: 56px;
+    }
+
+    .edu-row:nth-child(even) {
+      flex-direction: row-reverse;
+      text-align: right;
+    }
+
+    .edu-bignum {
+      font-family: var(--display);
+      font-weight: 700;
+      font-size: 4.5rem;
+      color: var(--coral);
+      opacity: .7;
+      flex-shrink: 0;
+    }
+
+    .edu-row:nth-child(2) .edu-bignum {
+      color: var(--teal);
+    }
+
+    .edu-row:nth-child(3) .edu-bignum {
+      color: var(--magenta);
+    }
+
+    .edu-body h3 {
+      font-family: var(--display);
+      font-weight: 600;
+      font-size: 1.4rem;
+    }
+
+    .edu-body .place {
+      color: var(--ink-soft);
+      margin-top: 6px;
+      font-family: var(--serif);
+    }
+
+    .edu-body .period {
+      font-weight: 700;
+      font-size: .8rem;
+      margin-top: 10px;
+      display: inline-block;
+      background: var(--ink);
+      color: var(--bg);
+      padding: 5px 14px;
+      border-radius: 20px;
+      font-family: var(--body);
+    }
+
+    @media (max-width:700px) {
+
+      .edu-row,
+      .edu-row:nth-child(even) {
+        flex-direction: column;
+        text-align: left;
+        gap: 12px;
+      }
+    }
+
+    #more h2 {
+      font-family: var(--display);
+      font-weight: 600;
+      font-size: clamp(2rem, 4vw, 3rem);
+      margin-bottom: 60px;
+      margin-left: 6vw;
+      max-width: 18ch;
+    }
+
+    .board {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+    }
+
+    @media (max-width:900px) {
+      .board {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width:560px) {
+      .board {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .note {
+      border-radius: 4px;
+      padding: 24px 22px;
+      position: relative;
+      box-shadow: 0 8px 16px rgba(36, 26, 18, 0.12);
+      font-size: .92rem;
+    }
+
+    .note::before {
+      content: '';
+      position: absolute;
+      top: -10px;
+      left: 50%;
+      transform: translateX(-50%) rotate(-4deg);
+      width: 54px;
+      height: 20px;
+      background: rgba(255, 255, 255, 0.55);
+      border: 1px solid rgba(0, 0, 0, 0.06);
+    }
+
+    .note h4 {
+      font-family: var(--display);
+      font-weight: 600;
+      font-size: 1.05rem;
+      margin-bottom: 8px;
+    }
+
+    .note p {
+      color: var(--ink);
+      opacity: .82;
+      font-family: var(--serif);
+    }
+
+    .note:nth-child(1) {
+      background: var(--coral-tint);
+      transform: rotate(-2deg);
+    }
+
+    .note:nth-child(2) {
+      background: var(--teal-tint);
+      transform: rotate(1.5deg);
+    }
+
+    .note:nth-child(3) {
+      background: var(--gold-tint);
+      transform: rotate(-1deg);
+    }
+
+    .note:nth-child(4) {
+      background: var(--magenta-tint);
+      transform: rotate(2deg);
+    }
+
+    .note:nth-child(5) {
+      background: var(--magenta-tint);
+      transform: rotate(1deg);
+    }
+
+    .note:nth-child(6) {
+      background: var(--gold-tint);
+      transform: rotate(-1.5deg);
+    }
+
+    .note:nth-child(7) {
+      background: var(--teal-tint);
+      transform: rotate(1.5deg);
+    }
+
+    .note:nth-child(8) {
+      background: var(--coral-tint);
+      transform: rotate(-1.5deg);
+    }
+
+    .courses-row {
+      margin-top: 60px;
+      padding: 0 6vw;
+    }
+
+    .courses-row .glabel {
+      font-family: var(--display);
+      font-style: italic;
+      font-weight: 600;
+      font-size: 1.3rem;
+      color: var(--magenta);
+      margin-bottom: 20px;
+      display: block;
+    }
+
+    .course-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--bg);
+      border: 2px solid var(--ink);
+      padding: 10px 18px;
+      border-radius: 30px;
+      margin: 0 12px 12px 0;
+      font-size: .85rem;
+      font-weight: 600;
+      font-family: var(--body);
+    }
+
+    .course-pill .cdate {
+      font-weight: 700;
+      color: var(--coral);
+    }
+
+    #contact {
+      padding-bottom: 120px;
+    }
+
+    #contact .wrap {
+      position: relative;
+    }
+
+    #contact h2 {
+      font-family: var(--display);
+      font-weight: 600;
+      font-size: clamp(2.4rem, 6vw, 4rem);
+      max-width: 14ch;
+    }
+
+    #contact p.lede {
+      margin-top: 20px;
+      color: var(--ink-soft);
+      font-size: 1.05rem;
+      max-width: 40ch;
+      font-family: var(--serif);
+    }
+
+    .contact-links {
+      margin-top: 50px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .clink {
+      font-weight: 700;
+      font-size: .95rem;
+      padding: 14px 24px;
+      border-radius: 40px;
+      box-shadow: 4px 4px 0 var(--ink);
+      border: 2px solid var(--ink);
+      font-family: var(--body);
+      transition: .35s ease;
+    }
+
+    .clink:nth-child(1) {
+      background: var(--coral);
+      color: #fff;
+    }
+
+    .clink:nth-child(2) {
+      background: var(--teal);
+      color: #fff;
+    }
+
+    .clink:nth-child(3) {
+      background: var(--gold);
+      color: #fff;
+    }
+
+    .clink:nth-child(4) {
+      background: var(--magenta);
+      color: #fff;
+    }
+
+    .clink:nth-child(1):hover {
+      transform: rotate(-5deg) scale(1.05);
+    }
+
+    .clink:nth-child(2):hover {
+      transform: rotate(4deg) scale(1.05);
+    }
+
+    .clink:nth-child(3):hover {
+      transform: rotate(-5deg) scale(1.05);
+    }
+
+    .clink:nth-child(4):hover {
+      transform: rotate(5deg) scale(1.05);
+    }
+
+    .clink:hover {
+      border-radius: 0;
+      box-shadow: 5px 5px 0 var(--ink);
+    }
+
+    footer {
+      text-align: center;
+      padding: 30px;
+      font-size: .8rem;
+      color: var(--ink-soft);
+      font-weight: 600;
+      font-family: var(--body);
+    }
+
+    footer {
+      padding: 30px 0;
+      font-size: .8rem;
+      color: var(--ink-soft);
+      font-weight: 600;
+      font-family: var(--body);
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .back-to-top {
+      width: 36px;
+      height: 36px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--ink);
+      color: var(--bg);
+      border-radius: 50%;
+      border: 1.5px solid var(--ink);
+      transition: border-radius .35s cubic-bezier(.4, 0, .2, 1), transform .35s cubic-bezier(.4, 0, .2, 1),
+        background-color .35s ease, color .35s ease, box-shadow .35s ease;
+    }
+
+    .back-to-top .arrow {
+      font-size: .95rem;
+      line-height: 1;
+      font-weight: 700;
+      display: inline-block;
+      transition: transform .35s cubic-bezier(.4, 0, .2, 1);
+    }
+
+    .back-to-top:hover {
+      border-radius: 6px;
+      background: var(--teal-tint);
+      color: var(--ink);
+      transform: rotate(135deg);
+    }
+
+    .back-to-top:hover .arrow {
+      transform: rotate(-135deg);
+    }
+  </style>
 </head>
+
 <body>
-
-<nav>
-  <div class="wrap">
-    <a href="#top" class="nav-mark">A P <span>Abhiram</span> Krishna</a>
-    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false" id="navToggle">&#9776;</button>
-    <ul class="nav-links" id="navLinks">
-      <li><a href="#about">About</a></li>
-      <li><a href="#projects">Projects</a></li>
-      <li><a href="#skills">Skills</a></li>
-      <li><a href="#education">Education</a></li>
-      <li><a href="#more">More</a></li>
-      <li><a href="#contact">Contact</a></li>
-    </ul>
+  <canvas id="heroCanvas"></canvas>
+  <div class="top-bar" id="topBar">
+    <div class="mark"><span>A P ABHIRAM KRISHNA</span></div>
+    <a class="quick-contact" href="mailto:abhiramkrishna560@gmail.com">Say hello →</a>
   </div>
-</nav>
 
-<header class="hero" id="top">
-  <canvas id="node-canvas"></canvas>
-  <div class="wrap hero-inner">
-    <div class="eyebrow"><span class="dot"></span>Data Science &amp; ML · Amrita Vishwa Vidyapeetham</div>
-    <h1>Turning ambiguous specs into structured <em>diagrams</em>, and data into decisions.</h1>
-    <p class="lede">I'm Abhiram — a Computer Applications graduate working at the intersection of NLP, vision-language models, and software modeling, teaching machines to read specifications the way engineers read them: as diagrams.</p>
-    <div class="hero-actions">
-      <a href="#projects" class="btn btn-primary">See the research →</a>
-      <a href="mailto:abhiramkrishna560@gmail.com" class="btn btn-ghost">Get in touch</a>
-    </div>
-  </div>
-  <div class="scroll-cue">SCROLL</div>
-</header>
-
-<section id="about">
-  <div class="wrap">
-    <div class="about-grid">
-      <div class="about-text">
-        <div class="section-head" style="margin-bottom:28px;">
-          <span class="tag">01 · About</span>
-          <h2>A data science graduate who thinks in diagrams</h2>
-        </div>
-        <p>I'm a <strong>Computer Applications graduate specializing in Data Science</strong> at Amrita Vishwa Vidyapeetham, Amritapuri, with an academic foundation across programming, data analysis, and machine learning, and hands-on practice in <strong>Python, SQL, and Java</strong>.</p>
-        <p>Most of my recent work lives at the boundary of <strong>software engineering education and NLP/LLMs</strong> — building systems that turn natural-language requirements and even hand-drawn diagrams into validated UML, so students and engineers get feedback on their modeling the same way a compiler gives feedback on code.</p>
-        <p>Outside research, I organize for the <strong>Amrita Sports Council</strong> and play competitive basketball — which is where most of my decision-making-under-pressure and team-coordination instincts actually come from.</p>
-      </div>
-      <div class="stat-block">
-        <div class="stat"><div class="num">9.47</div><div class="label">CGPA, BCA Data Science</div></div>
-        <div class="stat"><div class="num">1</div><div class="label">IEEE conference paper</div></div>
-        <div class="stat"><div class="num">3</div><div class="label">Active research projects</div></div>
-        <div class="stat"><div class="num">2024–26</div><div class="label">Sports Council Organizer</div></div>
+  <header class="hero" id="top">
+    <div class="wrap">
+      <h1>Turning specs into <em>structured diagrams</em>.</h1>
+      <div class="hero-actions">
+        <a href="#projects" class="btn btn-solid">See the research</a>
+        <a href="#contact" class="btn btn-outline">Get in touch</a>
       </div>
     </div>
-  </div>
-</section>
+  </header>
 
-<section id="projects">
-  <div class="wrap">
-    <div class="section-head">
-      <span class="tag">02 · Projects</span>
-      <h2>Research &amp; projects</h2>
-      <p>Three connected threads, each pushing further into automated diagram generation and validation for software engineering education.</p>
+  <section class="story-wrap" id="story">
+    <div class="story-sticky">
+      <canvas id="storyCanvas"></canvas>
+      <div class="story-cap cap-1">A page of ambiguous requirements… </div>
+      <div class="story-cap cap-2">…becomes a validated diagram.</div>
+      <div class="story-cap cap-3"></div>
     </div>
+  </section>
 
-    <div class="project-chain">
-
-      <div class="project-node">
-        <div class="project-card">
-          <div class="project-top">
-            <h3>Automated Class Diagram Differencing using Vision Language Models</h3>
-            <span class="project-period">Feb 2026 – Jun 2026</span>
-          </div>
-          <p>An automated UML learning framework using Vision Language Models to analyze and compare image-based class diagrams, detect structural and semantic errors, and provide iterative feedback that improves modeling accuracy and learning outcomes.</p>
-          <div class="project-tags">
-            <span class="tag-pill">Vision Language Models</span>
-            <span class="tag-pill">UML</span>
-            <span class="tag-pill">Python</span>
-          </div>
-          <div class="project-foot">
-            <span class="status-pill wip"><span class="dot"></span>In progress</span>
-            <span class="status-pill wip"><span class="dot"></span>Repo migrating to GitHub soon</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="project-node">
-        <div class="project-card">
-          <div class="project-top">
-            <h3>Explainable Feedback &amp; Iterative Correction for Spec-to-UML Generation</h3>
-            <span class="project-period">Aug 2025 – Dec 2025</span>
-          </div>
-          <p>An explainable UML validation framework built with Python, LLMs, and PlantUML, giving students iterative feedback to improve modeling accuracy in software engineering education.</p>
-          <div class="project-tags">
-            <span class="tag-pill">LLMs</span>
-            <span class="tag-pill">PlantUML</span>
-            <span class="tag-pill">Python</span>
-            <span class="tag-pill">Explainability</span>
-          </div>
-          <div class="project-foot">
-            <span class="status-pill wip"><span class="dot"></span>Completed</span>
-            <span class="status-pill wip"><span class="dot"></span>Repo migrating to GitHub soon</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="project-node">
-        <div class="project-card">
-          <div class="project-top">
-            <h3>Semantic Relation Extraction for Use Case Modeling</h3>
-            <span class="project-period">Mar 2025 – Jul 2025</span>
-          </div>
-          <p>An NLP-based system using Python and spaCy that automatically generates use case diagrams from software specifications, built as a learning aid for students. Published as a peer-reviewed conference paper.</p>
-          <div class="project-tags">
-            <span class="tag-pill">spaCy</span>
-            <span class="tag-pill">NLP</span>
-            <span class="tag-pill">PlantUML</span>
-            <span class="tag-pill">Use Case Modeling</span>
-          </div>
-          <div class="project-foot">
-            <span class="status-pill published"><span class="dot"></span>Published — IEEE INDISCON '25, IIT Rourkela</span>
-            <a class="doi-link" href="https://doi.org/10.1109/INDISCON66021.2025.11253567" target="_blank" rel="noopener">View paper (DOI) ↗</a>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<section id="skills">
-  <div class="wrap">
-    <div class="section-head">
-      <span class="tag">03 · Skills</span>
-      <h2>What I work with</h2>
-    </div>
-    <div class="skill-clusters">
-      <div class="cluster core">
-        <h3>Data Mining &amp; Machine Learning</h3>
-        <p>Data preprocessing, cleaning, and transformation; frequent pattern mining, classification, and clustering; applying ML to extract insights and support decisions.</p>
-        <div class="node-tags">
-          <span class="node-tag">Classification</span>
-          <span class="node-tag">Clustering</span>
-          <span class="node-tag">Pattern Mining</span>
-          <span class="node-tag">Scikit-Learn</span>
-        </div>
-      </div>
-      <div class="cluster core">
-        <h3>Data Analysis &amp; Visualization</h3>
-        <p>Analyzing datasets and presenting insights through visualizations using Python's data stack.</p>
-        <div class="node-tags">
-          <span class="node-tag">Pandas</span>
-          <span class="node-tag">NumPy</span>
-          <span class="node-tag">Matplotlib</span>
-          <span class="node-tag">Seaborn</span>
-        </div>
-      </div>
-      <div class="cluster core">
-        <h3>DSA &amp; OOP</h3>
-        <p>Object-oriented principles and data structures &amp; algorithms in Python and Java, focused on problem-solving and code reusability.</p>
-        <div class="node-tags">
-          <span class="node-tag">Python</span>
-          <span class="node-tag">Java</span>
-          <span class="node-tag">OOP</span>
-          <span class="node-tag">Algorithms</span>
-        </div>
-      </div>
-      <div class="cluster core">
-        <h3>Database Management</h3>
-        <p>SQL and PL/SQL for database design, querying, and optimization, with hands-on practice on MySQL and PostgreSQL.</p>
-        <div class="node-tags">
-          <span class="node-tag">SQL</span>
-          <span class="node-tag">PL/SQL</span>
-          <span class="node-tag">MySQL</span>
-          <span class="node-tag">PostgreSQL</span>
-        </div>
-      </div>
-      <div class="cluster soft">
-        <h3>Team Collaboration &amp; Management</h3>
-        <p>Leadership and coordination built through playing and managing team-based sports like basketball.</p>
-        <div class="node-tags">
-          <span class="node-tag">Leadership</span>
-          <span class="node-tag">Coordination</span>
-        </div>
-      </div>
-      <div class="cluster soft">
-        <h3>Decision Making &amp; Adaptability</h3>
-        <p>Strengthened through coordinating events, making quick strategic calls in games, and balancing roles as player, organizer, and student.</p>
-        <div class="node-tags">
-          <span class="node-tag">Strategic Thinking</span>
-          <span class="node-tag">Adaptability</span>
+  <section id="about">
+    <div class="wrap">
+      <aside class="about-side">
+        <div class="about-label">About</div>
+        <ul class="about-facts">
+          <li><span>Based in</span>Kerala, India</li>
+          <li><span>Focus</span>NLP · LLMs · UML</li>
+          <li><span>Languages</span>English, Malayalam, Hindi</li>
+          <li><span>Open to</span>Jobs &amp; Internships</li>
+        </ul>
+      </aside>
+      <div class="about-copy">
+        <h2 style="color:#FF5A3C; text-align: right;">A data scientist who thinks in structure</h2>
+        <p>I'm a <strong>Computer Applications graduate specializing in Data Science</strong> from Amrita Vishwa
+          Vidyapeetham, Amritapuri, with an academic foundation across programming, data analysis, and machine learning,
+          and hands-on practice in <strong>Python, SQL, and Java</strong>.</p>
+        <p>Most of my recent work lives at the boundary of <strong>software engineering education and NLP/LLMs</strong>
+          - building systems that turn natural-language requirements and hand-drawn diagrams into validated UML, so
+          students get feedback on their modeling the way a compiler gives feedback on code.</p>
+        <p>Outside research, I organize for the <strong>Amrita Sports Council</strong> and play competitive basketball,
+          which is where most of my decision-making-under-pressure developed.</p>
+        <div class="about-stats">
+          <div class="stat-chip"><span class="n">9.47</span><span class="l">CGPA</span></div>
+          <div class="stat-chip"><span class="n">1</span><span class="l">IEEE paper</span></div>
+          <div class="stat-chip"><span class="n">3</span><span class="l">Projects</span></div>
+          <div class="stat-chip"><span class="n">'24 – '26</span><span class="l">Organizer</span></div>
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<section id="education">
-  <div class="wrap">
-    <div class="section-head">
-      <span class="tag">04 · Education</span>
-      <h2>Academic background</h2>
+  <section id="projects">
+    <div class="proj-head">
+      <h2>Research on the wall</h2>
     </div>
-    <div class="timeline">
-      <div class="tl-item">
-        <div class="tl-period">Aug 2023 – Aug 2026</div>
-        <div class="tl-body">
+    <div class="wrap">
+      <div class="collage">
+        <div class="pcard p1">
+          <h3>Automated Class Diagram Differencing using Vision Language Models</h3>
+          <span class="period">Feb 2026 – Jun 2026</span>
+          <p>An automated UML learning framework using VLMs to analyze and compare image-based class diagrams, detect
+            structural and semantic errors, and give iterative feedback that improves modeling accuracy.</p>
+          <div class="ptags">
+            <span>VLMs</span><span>UML</span><span>Python</span><span>RAG</span><span>Fine-Tuning</span><span>Explainable
+              AI</span>
+          </div>
+          <div class="pfoot"><span class="badge alt">Soon to be Published</span><span class="badge alt">Hugging Face →
+              GitHub soon</span></div>
+        </div>
+        <div class="pcard p2">
+          <h3>Explainable Feedback &amp; Iterative Correction for Spec-to-UML Generation</h3>
+          <span class="period">Aug 2025 – Dec 2025</span>
+          <p>An explainable UML validation framework built with Python, LLMs, and PlantUML, giving students iterative
+            feedback to improve modeling accuracy in software engineering education.</p>
+          <div class="ptags"><span>LLMs</span><span>API</span><span>PlantUML</span><span>Explainability</span></div>
+          <div class="pfoot"><span class="badge alt">Completed</span><span class="badge alt">Hugging Face → GitHub
+              soon</span></div>
+        </div>
+        <div class="pcard p3">
+          <h3>Semantic Relation Extraction for Use Case Modeling</h3>
+          <span class="period">Mar 2025 – Jul 2025</span>
+          <p>An NLP system using Python and spaCy that automatically generates use case diagrams from software
+            specifications - a learning aid for students, later published as a peer-reviewed paper.</p>
+          <div class="ptags"><span>spaCy</span><span>NLP</span><span>PlantUML</span></div>
+          <div class="pfoot">
+            <span class="badge">Published · IEEE INDISCON '25</span>
+            <a class="doi" href="https://doi.org/10.1109/INDISCON66021.2025.11253567" target="_blank"
+              rel="noopener">Read the paper ↗</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="skills">
+    <div class="skills-head">
+      <h2>What I actually do</h2>
+      <p class="skills-chip">
+        <span class="chip-label">Currently exploring</span>
+        Agentic workflows · Model evaluation · Retrieval-augmented reasoning · Interpretability
+      </p>
+    </div>
+    <div class="skill-cards">
+      <article class="skill-card sc-1">
+        <span class="sc-num" aria-hidden="true">01</span>
+        <h3 class="sc-label">Modeling &amp; Analysis</h3>
+        <p class="sc-copy">I work comfortably with classical ML - clustering, classification, and pattern mining - plus
+          the Pandas · NumPy · Matplotlib stack for the wrangling and visualization around it. Most of my practice comes
+          from research projects, not tutorials.</p>
+        <ul class="sc-tools">
+          <li>scikit-learn</li>
+          <li>Pandas</li>
+          <li>NumPy</li>
+          <li>Matplotlib</li>
+          <li>Seaborn</li>
+        </ul>
+      </article>
+      <article class="skill-card sc-2">
+        <span class="sc-num" aria-hidden="true">02</span>
+        <h3 class="sc-label">Software &amp; Development</h3>
+        <p class="sc-copy">Python and Java for building things, SQL · PL/SQL for talking to data, PostgreSQL and MySQL for
+          storing it. I care about code other students can read and extend - half my work is educational tooling, so
+          clarity isn't optional.</p>
+        <ul class="sc-tools">
+          <li>Python</li>
+          <li>Java</li>
+          <li>OOP</li>
+          <li>SQL</li>
+          <li>PL/SQL</li>
+          <li>MySQL</li>
+          <li>PostgreSQL</li>
+        </ul>
+      </article>
+      <article class="skill-card sc-3">
+        <span class="sc-num" aria-hidden="true">03</span>
+        <h3 class="sc-label">Machines &amp; Language</h3>
+        <p class="sc-copy">NLP pipelines, LLM prompting, and explainability are where I've gone deepest - not "I know
+          transformers," but I've shipped a system that extracts use cases from plain English and one that validates UML
+          against a spec.</p>
+        <ul class="sc-tools">
+          <li>spaCy</li>
+          <li>LLMs</li>
+          <li>VLMs</li>
+          <li>PlantUML</li>
+          <li>Explainability</li>
+        </ul>
+      </article>
+      <article class="skill-card sc-4">
+        <span class="sc-num" aria-hidden="true">04</span>
+        <h3 class="sc-label">Beyond The Keyboard</h3>
+        <p class="sc-copy">Organizing for the Amrita Sports Council and playing competitive basketball aren't mere decoration -
+          they're where I learned to make decisions under pressure and lead without a title.</p>
+        <ul class="sc-tools">
+          <li>Team leadership</li>
+          <li>Decision-making</li>
+          <li>Adaptability</li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <section id="education">
+    <h2>How I got here</h2>
+    <div class="wrap">
+      <div class="edu-row">
+        <div class="edu-bignum">01</div>
+        <div class="edu-body">
           <h3>Bachelor's in Computer Applications (Spec. in Data Science)</h3>
           <div class="place">Amrita Vishwa Vidyapeetham, Amritapuri, Kerala</div>
-          <span class="cgpa">CGPA 9.47 · Campus Gold Rank</span>
+          <span class="period">Aug 2023 – Aug 2026 · CGPA 9.47 · Campus Gold Rank</span>
         </div>
       </div>
-      <div class="tl-item">
-        <div class="tl-period">Jul 2021 – May 2023</div>
-        <div class="tl-body">
-          <h3>Higher Secondary — Computer Science &amp; Mathematics</h3>
+      <div class="edu-row">
+        <div class="edu-bignum">02</div>
+        <div class="edu-body">
+          <h3>Higher Secondary - Computer Science &amp; Mathematics</h3>
           <div class="place">Navajeevan Bethany Vidyalaya, Kerala</div>
-          <span class="cgpa">CGPA 8.80</span>
+          <span class="period">Jul 2021 – May 2023 · CGPA 8.80</span>
         </div>
       </div>
-      <div class="tl-item">
-        <div class="tl-period">Jun 2020 – May 2021</div>
-        <div class="tl-body">
+      <div class="edu-row">
+        <div class="edu-bignum">03</div>
+        <div class="edu-body">
           <h3>Secondary Education</h3>
           <div class="place">Navajeevan Bethany Vidyalaya, Kerala</div>
-          <span class="cgpa">CGPA 9.12</span>
+          <span class="period">Jun 2020 – May 2021 · CGPA 9.12</span>
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<section id="more">
-  <div class="wrap">
-    <div class="section-head">
-      <span class="tag">05 · More</span>
-      <h2>Achievements, interests &amp; courses</h2>
-    </div>
-    <div class="more-grid">
-      <div class="more-col">
-        <h3>Achievements &amp; organisations</h3>
-        <ul class="achv-list">
-          <li><strong>Certificate of Presentation</strong>6th IEEE India Council International Subsections Conference, organized by IEEE Rourkela Subsection &amp; IEEE India Council, held at NIT Rourkela.</li>
-          <li><strong>Campus Gold Rank</strong>Awarded for the BCA Data Science degree at Amrita Vishwa Vidyapeetham, Amritapuri.</li>
-          <li><strong>Basketball Runner-Up</strong>South Zone Sahodaya 2022 and Inter-Amrita 2024 tournaments.</li>
-          <li><strong>Sports Council Organizer</strong>Amrita Vishwa Vidyapeetham, Amritapuri Sports Council, 2024 – 2026.</li>
-        </ul>
-
-        <div class="courses">
-          <h4>Certificate courses</h4>
-          <div class="course-row"><span>Introduction to Large Language Models — LinkedIn Learning</span><span class="course-date">Jan 2025</span></div>
-          <div class="course-row"><span>Excel Regression Analysis — Great Learning</span><span class="course-date">Nov 2024</span></div>
-          <div class="course-row"><span>Machine Learning — Udemy</span><span class="course-date">Jul 2025</span></div>
+  <section id="more">
+    <h2>Beyond the coursework</h2>
+    <div class="wrap">
+      <div class="board">
+        <div class="note">
+          <h4>Certificate of Presentation</h4>
+          <p>6th IEEE India Council International Subsections Conference, held at NIT Rourkela, organized by IEEE
+            Rourkela Subsection &amp; IEEE India Council.</p>
         </div>
-      </div>
-
-      <div class="more-col">
-        <h3>Areas of interest</h3>
-        <div class="interest-list">
-          <div class="interest-item">
-            <h4>Analytics &amp; Visualization</h4>
-            <p>Applying statistical and computational methods to extract and present insights through impactful visual representations.</p>
-          </div>
-          <div class="interest-item">
-            <h4>Large Language Models</h4>
-            <p>Leveraging advanced AI models for text generation, reasoning, and automation tasks.</p>
-          </div>
-          <div class="interest-item">
-            <h4>Natural Language Processing</h4>
-            <p>Exploring techniques for processing and understanding human language through computational methods.</p>
-          </div>
+        <div class="note">
+          <h4>Campus Gold</h4>
+          <p>Awarded for the BCA Data Science degree at Amrita Vishwa Vidyapeetham, Amritapuri.</p>
+        </div>
+        <div class="note">
+          <h4>Analytics &amp; Visualization</h4>
+          <p>Applying statistical and computational methods to present insights through impactful visuals.</p>
+        </div>
+        <div class="note">
+          <h4>Large Language Models</h4>
+          <p>Leveraging advanced AI models for text generation, reasoning, and automation tasks.</p>
+        </div>
+        <div class="note">
+          <h4>Natural Language Processing</h4>
+          <p>Exploring techniques for processing and understanding human language computationally.</p>
+        </div>
+        <div class="note">
+          <h4>Prompt Engineering</h4>
+          <p>Crafting precise context and strategies to optimize LLM outputs for complex workflows.</p>
+        </div>
+        <div class="note">
+          <h4>Basketball Runner-Up</h4>
+          <p>South Zone Sahodaya 2022 and Inter-Amrita 2024 tournaments.</p>
+        </div>
+        <div class="note">
+          <h4>Sports Council Organizer</h4>
+          <p>Amrita Vishwa Vidyapeetham, Amritapuri Sports Council, 2024 – 2026.</p>
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<section id="contact">
-  <div class="wrap">
-    <div class="contact-card">
-      <h2>Let's connect the dots.</h2>
-      <p>Open to research collaborations, internships, and conversations about diagrams, LLMs, and everything in between.</p>
+  <section id="contact">
+    <div class="wrap">
+      <h2>Let's use LLMs the right way.</h2>
+      <p class="lede">Open to jobs, internships, and conversations about diagrams, LLMs, and everything in between.</p>
       <div class="contact-links">
-        <a class="btn btn-primary" href="mailto:abhiramkrishna560@gmail.com">Email me ↗</a>
-        <a class="btn btn-ghost" href="tel:+919188577376">+91 9188 577 376</a>
-        <a class="btn btn-ghost" href="https://www.linkedin.com/in/abhiram-krishna-a807772bb" target="_blank" rel="noopener">LinkedIn ↗</a>
-        <a class="btn btn-ghost" href="https://github.com/PeaceLovingGhost" target="_blank" rel="noopener">GitHub ↗</a>
+        <a class="clink" href="mailto:abhiramkrishna560@gmail.com">Email ↗</a>
+        <a class="clink" href="tel:+919188577376">+91 9188 577 376</a>
+        <a class="clink" href="https://www.linkedin.com/in/abhiram-krishna-a807772bb" target="_blank"
+          rel="noopener">LinkedIn ↗</a>
+        <a class="clink" href="https://github.com/PeaceLovingGhost" target="_blank" rel="noopener">GitHub ↗</a>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<footer>
-  Built by A P Abhiram Krishna · <a href="https://github.com/PeaceLovingGhost" target="_blank" rel="noopener">github.com/PeaceLovingGhost</a>
-</footer>
+  <footer>
+    <div class="wrap footer-inner">
+      <span>© A P ABHIRAM KRISHNA · SEP 2026</span>
+      <a href="#top" class="back-to-top" aria-label="Back to top">
+        <span class="arrow">↑</span>
+      </a>
+    </div>
+  </footer>
 
-<script>
-  // Mobile nav toggle
-  const navToggle = document.getElementById('navToggle');
-  const navLinks = document.getElementById('navLinks');
-  navToggle.addEventListener('click', () => {
-    const isOpen = navLinks.classList.toggle('open');
-    navToggle.setAttribute('aria-expanded', isOpen);
-  });
-  navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
-    navLinks.classList.remove('open');
-    navToggle.setAttribute('aria-expanded', 'false');
-  }));
+  <script>
+    (function () {
+      const heroCanvas = document.getElementById('heroCanvas');
+      const heroCtx = heroCanvas.getContext('2d');
+      const heroEl = document.querySelector('.hero');
+      const reduceMotionHero = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      let hW, hH, hDpr, strands = [];
 
-  // Node-graph hero background
-  (function(){
-    const canvas = document.getElementById('node-canvas');
-    const ctx = canvas.getContext('2d');
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    let w, h, nodes = [];
-    const NODE_COUNT_BASE = 5200; // density divisor
+      function rand(a, b) { return a + Math.random() * (b - a); }
 
-    function resize(){
-      w = canvas.width = canvas.offsetWidth * devicePixelRatio;
-      h = canvas.height = canvas.offsetHeight * devicePixelRatio;
-      const count = Math.min(70, Math.max(26, Math.floor((w*h)/ (NODE_COUNT_BASE*devicePixelRatio*devicePixelRatio*100))));
-      nodes = Array.from({length: count}, () => ({
-        x: Math.random()*w,
-        y: Math.random()*h,
-        vx: (Math.random()-0.5)*0.25*devicePixelRatio,
-        vy: (Math.random()-0.5)*0.25*devicePixelRatio,
-        r: (Math.random()*1.6+1)*devicePixelRatio
-      }));
-    }
+      function makeStrand(spawnRandomY) {
+        return {
+          x: rand(0.08, 0.92),
+          y: spawnRandomY ? rand(0.15, 1.15) : rand(1.0, 1.3),
+          len: rand(0.10, 0.26),
+          sway: rand(-0.05, 0.05),
+          speed: rand(0.00025, 0.0007),
+          width: rand(1.2, 3),
+          phase: rand(0, Math.PI * 2),
+          hueMix: Math.random()
+        };
+      }
 
-    function draw(){
-      ctx.clearRect(0,0,w,h);
-      const maxDist = 150*devicePixelRatio;
-      for(let i=0;i<nodes.length;i++){
-        const n = nodes[i];
-        if(!reduceMotion){
-          n.x += n.vx; n.y += n.vy;
-          if(n.x < 0 || n.x > w) n.vx *= -1;
-          if(n.y < 0 || n.y > h) n.vy *= -1;
-        }
-        for(let j=i+1;j<nodes.length;j++){
-          const m = nodes[j];
-          const dx = n.x-m.x, dy = n.y-m.y;
-          const dist = Math.sqrt(dx*dx+dy*dy);
-          if(dist < maxDist){
-            ctx.strokeStyle = `rgba(63,220,196,${(1-dist/maxDist)*0.22})`;
-            ctx.lineWidth = 1*devicePixelRatio;
-            ctx.beginPath();
-            ctx.moveTo(n.x,n.y);
-            ctx.lineTo(m.x,m.y);
-            ctx.stroke();
+      function heroResize() {
+        hDpr = Math.min(window.devicePixelRatio || 1, 2);
+        hW = heroCanvas.width = heroEl.clientWidth * hDpr;
+        hH = heroCanvas.height = heroEl.clientHeight * hDpr;
+        const count = Math.max(18, Math.min(46, Math.floor(hW / 40)));
+        strands = Array.from({ length: count }, () => makeStrand(true));
+      }
+
+      function strandColor(t, alpha) {
+        const c1 = [232, 149, 26], c2 = [255, 90, 60], c3 = [214, 46, 130];
+        let r, g, b;
+        if (t < 0.5) { const k = t / 0.5; r = c1[0] + (c2[0] - c1[0]) * k; g = c1[1] + (c2[1] - c1[1]) * k; b = c1[2] + (c2[2] - c1[2]) * k; }
+        else { const k = (t - 0.5) / 0.5; r = c2[0] + (c3[0] - c2[0]) * k; g = c2[1] + (c3[1] - c2[1]) * k; b = c2[2] + (c3[2] - c2[2]) * k; }
+        return `rgba(${r | 0},${g | 0},${b | 0},${alpha})`;
+      }
+
+      function drawHero(time) {
+        if (!hW || !hH) return;
+        heroCtx.clearRect(0, 0, hW, hH);
+
+        const glowX = hW * 0.55, glowY = hH * 1.02;
+        const glow = heroCtx.createRadialGradient(glowX, glowY, 0, glowX, glowY, hH * 0.75);
+        glow.addColorStop(0, 'rgba(255,180,90,0.28)');
+        glow.addColorStop(1, 'rgba(255,180,90,0)');
+        heroCtx.fillStyle = glow;
+        heroCtx.fillRect(0, 0, hW, hH);
+
+        strands.forEach(s => {
+          if (!reduceMotionHero) { s.y -= s.speed * 16; }
+          if (s.y < -0.2) { Object.assign(s, makeStrand(false)); }
+
+          const baseX = s.x * hW, baseY = s.y * hH;
+          const segs = 8;
+          heroCtx.beginPath();
+          for (let i = 0; i <= segs; i++) {
+            const t = i / segs;
+            const sway = Math.sin(time * 0.0004 + s.phase + t * 3) * s.sway * hW;
+            const px = baseX + sway * t;
+            const py = baseY - t * s.len * hH;
+            if (i === 0) heroCtx.moveTo(px, py); else heroCtx.lineTo(px, py);
           }
+          const tipAlpha = 0.0;
+          const baseAlpha = 0.55;
+          const grad = heroCtx.createLinearGradient(baseX, baseY, baseX, baseY - s.len * hH);
+          grad.addColorStop(0, strandColor(s.hueMix, baseAlpha));
+          grad.addColorStop(1, strandColor(s.hueMix, tipAlpha));
+          heroCtx.strokeStyle = grad;
+          heroCtx.lineWidth = s.width * hDpr;
+          heroCtx.lineCap = 'round';
+          heroCtx.stroke();
+
+          heroCtx.beginPath();
+          heroCtx.arc(baseX, baseY, s.width * 1.4 * hDpr, 0, Math.PI * 2);
+          heroCtx.fillStyle = strandColor(s.hueMix, 0.7);
+          heroCtx.fill();
+        });
+
+        if (!reduceMotionHero) requestAnimationFrame(drawHero);
+      }
+
+      window.addEventListener('resize', heroResize);
+      heroResize();
+      requestAnimationFrame(drawHero);
+      if (reduceMotionHero) { drawHero(0); }
+
+      const topBar = document.getElementById('topBar');
+      function updateTopBar() {
+        const scrolled = window.scrollY > 450;
+        topBar.classList.toggle('scrolled', scrolled);
+      }
+      window.addEventListener('scroll', updateTopBar, { passive: true });
+      window.addEventListener('resize', updateTopBar);
+      window.addEventListener('load', updateTopBar);
+      updateTopBar();
+
+      const canvas = document.getElementById('storyCanvas');
+      const ctx = canvas.getContext('2d');
+      const wrapEl = document.getElementById('story');
+      const caps = [document.querySelector('.cap-1'), document.querySelector('.cap-2'), document.querySelector('.cap-3')];
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      let W, H, dpr;
+
+      const inkColor = [36, 26, 18];
+      const coral = [255, 90, 60];
+      const teal = [15, 168, 156];
+      const gold = [232, 149, 26];
+
+      function lerp(a, b, t) { return a + (b - a) * t; }
+      function lerpColor(c1, c2, t) { return `rgb(${Math.round(lerp(c1[0], c2[0], t))},${Math.round(lerp(c1[1], c2[1], t))},${Math.round(lerp(c1[2], c2[2], t))})`; }
+      function ease(t) { return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2; }
+
+      function resize() {
+        dpr = Math.min(window.devicePixelRatio || 1, 2);
+        W = canvas.width = canvas.clientWidth * dpr;
+        H = canvas.height = canvas.clientHeight * dpr;
+      }
+
+      const specLines = Array.from({ length: 7 }, (_, i) => ({ w: 0.55 - (i % 3) * 0.08 - Math.random() * 0.05, y: i }));
+      const boxes = [
+        { x: 0.60, y: 0.20, w: 0.28, h: 0.16, label: 'Spec' },
+        { x: 0.66, y: 0.46, w: 0.28, h: 0.20, label: 'Parser' },
+        { x: 0.58, y: 0.74, w: 0.30, h: 0.18, label: 'Diagram' }
+      ];
+      const edges = [[0, 1], [1, 2]];
+
+      function getProgress() {
+        const rect = wrapEl.getBoundingClientRect();
+        const total = rect.height - window.innerHeight;
+        if (total <= 0) return 0;
+        const p = (-rect.top) / total;
+        return Math.max(0, Math.min(1, p));
+      }
+
+      function draw() {
+        const p = getProgress();
+        ctx.clearRect(0, 0, W, H);
+
+        const linesFade = 1 - ease(Math.min(1, p / 0.55));
+        const boxReveal = ease(Math.max(0, Math.min(1, (p - 0.25) / 0.55)));
+        const edgeReveal = ease(Math.max(0, Math.min(1, (p - 0.55) / 0.4)));
+        const colorT = ease(Math.max(0, Math.min(1, (p - 0.3) / 0.6)));
+
+        const marginX = W * 0.08, topY = H * 0.18, lineH = H * 0.62 / specLines.length;
+
+        if (linesFade > 0.01) {
+          specLines.forEach((ln, i) => {
+            const y = topY + i * lineH;
+            const w = ln.w * (W * 0.42);
+            ctx.globalAlpha = linesFade;
+            ctx.fillStyle = lerpColor(inkColor, gold, colorT * 0.3);
+            const h = lineH * 0.34;
+            roundRect(ctx, marginX, y, w, h, h / 2);
+            ctx.fill();
+          });
+          ctx.globalAlpha = 1;
+        }
+
+        if (boxReveal > 0.01) {
+          boxes.forEach((b, i) => {
+            const bx = b.x * W, by = b.y * H, bw = b.w * W, bh = b.h * H;
+            const reveal = Math.max(0, Math.min(1, boxReveal * 3 - i));
+            if (reveal <= 0) return;
+            ctx.save();
+            ctx.globalAlpha = reveal;
+            const col = i === 0 ? coral : i === 1 ? teal : gold;
+            ctx.strokeStyle = lerpColor(inkColor, col, colorT);
+            ctx.lineWidth = 2.5 * dpr;
+            roundRect(ctx, bx, by, bw, bh * reveal, 10 * dpr);
+            ctx.stroke();
+            if (reveal > 0.6) {
+              ctx.globalAlpha = (reveal - 0.6) / 0.4;
+              ctx.fillStyle = lerpColor(inkColor, col, colorT);
+              ctx.font = `600 ${14 * dpr}px Work Sans, sans-serif`;
+              ctx.fillText(b.label, bx + 14 * dpr, by + 24 * dpr);
+              ctx.strokeStyle = 'rgba(36,26,18,0.25)';
+              ctx.lineWidth = 1 * dpr;
+              ctx.beginPath(); ctx.moveTo(bx, by + 34 * dpr); ctx.lineTo(bx + bw, by + 34 * dpr); ctx.stroke();
+            }
+            ctx.restore();
+          });
+        }
+
+        if (edgeReveal > 0.01) {
+          edges.forEach(([a, c], idx) => {
+            const from = boxes[a], to = boxes[c];
+            const fx = (from.x + from.w / 2) * W, fy = (from.y + from.h) * H;
+            const tx = (to.x + to.w / 2) * W, ty = to.y * H;
+            ctx.save();
+            ctx.globalAlpha = edgeReveal;
+            ctx.strokeStyle = lerpColor(inkColor, teal, colorT);
+            ctx.lineWidth = 2 * dpr;
+            ctx.setLineDash([6 * dpr, 6 * dpr]);
+            ctx.lineDashOffset = -p * 80 * dpr;
+            ctx.beginPath();
+            ctx.moveTo(fx, fy);
+            ctx.lineTo(tx, ty);
+            ctx.stroke();
+            ctx.restore();
+          });
+        }
+
+        caps[0].style.opacity = Math.max(0, 1 - p / 0.28);
+        caps[1].style.opacity = p > 0.62 && p < 0.95 ? 1 : Math.max(0, Math.min(1, (p - 0.5) / 0.15));
+        caps[2].style.opacity = p > 0.85 ? Math.min(1, (p - 0.85) / 0.12) : 0;
+      }
+
+      function roundRect(c, x, y, w, h, r) {
+        if (h <= 0 || w <= 0) return;
+        r = Math.min(r, w / 2, h / 2);
+        c.beginPath();
+        c.moveTo(x + r, y);
+        c.arcTo(x + w, y, x + w, y + h, r);
+        c.arcTo(x + w, y + h, x, y + h, r);
+        c.arcTo(x, y + h, x, y, r);
+        c.arcTo(x, y, x + w, y, r);
+        c.closePath();
+      }
+
+      let ticking = false;
+      function onScroll() {
+        if (!ticking) {
+          requestAnimationFrame(() => { draw(); ticking = false; });
+          ticking = true;
         }
       }
-      for(const n of nodes){
-        ctx.fillStyle = 'rgba(255,182,39,0.55)';
-        ctx.beginPath();
-        ctx.arc(n.x,n.y,n.r,0,Math.PI*2);
-        ctx.fill();
-      }
-      if(!reduceMotion) requestAnimationFrame(draw);
-    }
 
-    window.addEventListener('resize', resize);
-    resize();
-    draw();
-  })();
-</script>
-
+      window.addEventListener('resize', () => { resize(); draw(); });
+      window.addEventListener('scroll', onScroll, { passive: true });
+      resize();
+      draw();
+      window.addEventListener('load', () => { resize(); draw(); });
+      if (document.fonts && document.fonts.ready) { document.fonts.ready.then(() => { resize(); draw(); }); }
+    })();
+  </script>
 </body>
+
 </html>
