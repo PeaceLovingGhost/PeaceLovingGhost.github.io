@@ -9,7 +9,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=orbitron&family=Iceberg&display=swap" rel="stylesheet">
-
+  <link rel="icon"
+    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 1000'%3E%3Crect width='100%25' height='100%25' fill='%23000000'/%3E%3Cg fill='none' stroke='%235CD68C' stroke-width='26' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M 390, 725 L 445, 420 L 570, 640'/%3E%3Cpath d='M 178, 600 L 430, 550 C 490, 565 520, 590 560, 640'/%3E%3Cpath d='M 432, 345 C 500, 280 700, 260 800, 290 C 850, 310 830, 360 750, 420 C 650, 490 500, 540 430, 550'/%3E%3C/g%3E%3C/svg%3E">
   <style>
     :root {
       --bg: rgb(13, 13, 15);
@@ -100,6 +101,13 @@
       color: var(--green-bright)
     }
 
+    .brand-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 6px;
+      flex-shrink: 0;
+    }
+
     .topbar {
       position: sticky;
       top: env(safe-area-inset-top, 0px);
@@ -113,15 +121,6 @@
       z-index: 3;
     }
 
-    .topbar .prompt {
-      color: var(--dim);
-      transition: 0.35s ease;
-    }
-
-    .topbar .prompt b {
-      color: var(--green)
-    }
-
     .prompt-line {
       color: var(--dim);
       font-size: .9rem;
@@ -130,12 +129,6 @@
 
     .prompt-line b {
       color: var(--green)
-    }
-
-    .topbar .prompt:hover,
-    .topbar .prompt .b:hover {
-      color: var(--green);
-      transform: scale(1.05);
     }
 
     .navlinks {
@@ -341,7 +334,7 @@
     .about-grid {
       display: grid;
       grid-template-columns: 220px 1fr;
-      gap: 30px;                
+      gap: 30px;
     }
 
     @media (max-width:760px) {
@@ -498,10 +491,9 @@
       transition: 0.35s ease;
     }
 
-    .doi:hover{
+    .doi:hover {
       transform: scale(1.05);
       border-color: var(--green);
-      transform: scale(1.05);
     }
 
     .skill-grid {
@@ -717,10 +709,16 @@
 </head>
 
 <body>
-
   <div class="topbar">
     <div class="prompt">
-      <a href="#top">abhiram<b>@</b>portfolio:~$</a>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" class="brand-icon" aria-hidden="true">
+        <rect width="100%" height="100%" fill="#000000" />
+        <g fill="none" stroke="#5CD68C" stroke-width="26" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M 390, 725 L 445, 420 L 570, 640" />
+          <path d="M 178, 600 L 430, 550 C 490, 565 520, 590 560, 640" />
+          <path d="M 432, 345 C 500, 280 700, 260 800, 290 C 850, 310 830, 360 750, 420 C 650, 490 500, 540 430, 550" />
+        </g>
+      </svg>
     </div>
     <div class="navlinks">
       <a href="#about">about</a>
@@ -821,7 +819,7 @@
           <div class="pfoot">
             <span class="badge pub">published · IEEE INDISCON '25</span>
             <button class="doi"><a href="https://doi.org/10.1109/INDISCON66021.2025.11253567" target="_blank"
-              rel="noopener">read the paper ↗</a></button>
+                rel="noopener">read the paper ↗</a></button>
           </div>
         </div>
       </div>
