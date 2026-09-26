@@ -101,6 +101,20 @@
       color: var(--green-bright)
     }
 
+    .scroll-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, var(--green-dim), var(--green-bright));
+      transform-origin: 0%;
+      transform: scaleX(0);
+      z-index: 4;
+      transition: transform 0.05s linear;
+      box-shadow: 0 0 8px rgba(0, 255, 136, 0.6);
+    }
+
     .brand-icon {
       width: 60px;
       height: 60px;
@@ -109,7 +123,7 @@
       transition: 0.35s ease;
     }
 
-    .brand-icon:hover{
+    .brand-icon:hover {
       transform: scale(1.05);
     }
 
@@ -119,11 +133,62 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 16px 230px;
+      padding: 13px 230px 0px 230px;
       backdrop-filter: blur(5px);
       font-size: .82rem;
       flex-wrap: wrap;
       z-index: 3;
+    }
+
+    .status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--display);
+      font-size: .78rem;
+      color: var(--green);
+    }
+
+    .status::before {
+      content: '[';
+      color: var(--dim);
+      margin-right: -3px;
+    }
+
+    .status::after {
+      content: ']';
+      color: var(--dim);
+      margin-left: -3px;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      margin-top: 2px;
+      background: var(--green);
+      box-shadow: 0 0 6px var(--green-bright);
+      animation: statusPulse 1.8s ease-in-out infinite;
+    }
+
+    @keyframes statusPulse {
+
+      0%,
+      100% {
+        opacity: 1;
+        box-shadow: 0 0 6px var(--green-bright);
+      }
+
+      50% {
+        opacity: .35;
+        box-shadow: 0 0 2px var(--green-bright);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .status-dot {
+        animation: none;
+      }
     }
 
     .prompt-line {
@@ -160,7 +225,7 @@
 
     .hero {
       position: relative;
-      padding: 70px 0 60px;
+      padding: 0px 0 60px;
     }
 
     .hero h1 {
@@ -306,10 +371,6 @@
 
     .btn-solid:hover {
       background: transparent;
-    }
-
-    .btn-outline {
-      color: var(--text)
     }
 
     .btn:hover {
@@ -711,9 +772,19 @@
       transform: rotate(-495deg);
     }
   </style>
+
+  <script>
+    window.addEventListener('scroll', () => {
+      const p = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
+      document.querySelector('.scroll-progress').style.transform = `scaleX(${p})`;
+    }, { passive: true });
+  </script>
+
 </head>
 
 <body>
+  <div id="top"></div>
+  <div class="scroll-progress" id="scrollProgress"></div>
   <div class="topbar">
     <a href="#top">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" class="brand-icon" aria-hidden="true">
@@ -730,15 +801,20 @@
       <a href="#projects">research</a>
       <a href="#skills">skills</a>
       <a href="#education">education</a>
-      <a href="#contact">contact</a>
     </div>
+    <a href="resume.pdf" target="_blank" rel="noopener" class="btn">Résumé ↗</a>
   </div>
 
-  <header class="hero" id="top">
+  <header class="hero" id="hero">
     <div class="aura" aria-hidden="true">
       <span></span><span></span><span></span>
     </div>
     <div class="wrap">
+      <br>
+      <div class="status">
+        <span class="status-dot" aria-hidden="true"></span>
+        <span class="status-text">available</span>
+      </div>
       <div class="prompt-line">visitor@web:~$ <b>whoami</b></div>
       <h1>Data Scientist, NLP Researcher & UML tooling Builder<span class="cursor">_</span></h1>
       <p class="desc">I'm <strong>ABHIRAM KRISHNA</strong>; turning ambiguous specs and hand-drawn diagrams into
@@ -751,6 +827,7 @@
   </header>
 
   <section id="about">
+    <br>
     <div class="wrap">
       <div class="cmd-label"><b>$</b> cat about.md</div>
       <div class="about-grid">
@@ -767,7 +844,7 @@
           <p>Most of my recent work lives at the boundary of <strong>software engineering education and
               NLP/LLMs</strong> — building systems that turn natural-language requirements and hand-drawn diagrams into
             validated UML, so students get feedback on their modeling the way a compiler gives feedback on code.</p>
-          <p>Outside research, I organize for the <strong>Amrita Sports Council</strong> and play competitive
+          <p>Outside research, I organized for the <strong>Amrita Sports Council</strong> and play competitive
             basketball, which is where most of my decision-making-under-pressure developed.</p>
           <div class="stats">
             <div class="stat"><span class="n">9.47</span><span class="l">CGPA</span></div>
@@ -780,10 +857,10 @@
     </div>
   </section>
 
-  <section id="projects" class="alt-bg">
+  <section id="projects">
+    <br>
     <div class="wrap">
       <div class="cmd-label"><b>$</b> ls ~/research --recent</div>
-
       <div class="pcard">
         <div class="pcard-head"><span class="dot"></span> class-diagram-differencing.md</div>
         <div class="pcard-body">
@@ -795,7 +872,7 @@
             <span>VLMs</span><span>UML</span><span>Python</span><span>RAG</span><span>Fine-Tuning</span><span>Explainable
               AI</span>
           </div>
-          <div class="pfoot"><span class="badge">soon to be published</span><span class="badge">Hugging Face → GitHub
+          <div class="pfoot"><span class="badge">completed</span><span class="badge">Hugging Face → GitHub
               soon</span></div>
         </div>
       </div>
@@ -832,6 +909,7 @@
   </section>
 
   <section id="skills">
+    <br>
     <div class="wrap">
       <div class="cmd-label"><b>$</b> cat skills.json</div>
       <div class="skill-grid">
@@ -889,13 +967,14 @@
     </div>
   </section>
 
-  <section id="education" class="alt-bg">
+  <section id="education">
+    <br>
     <div class="wrap">
       <div class="cmd-label"><b>$</b> cat education.log</div>
       <div class="edu-row">
         <div class="tag">2023 – 2026</div>
         <div>
-          <h3>B.C.A., Data Science specialization</h3>
+          <h3>BCA, Data Science specialization</h3>
           <div class="place">Amrita Vishwa Vidyapeetham, Amritapuri, Kerala — CGPA 9.47 · Campus Gold Rank</div>
         </div>
       </div>
@@ -941,7 +1020,7 @@
     </div>
   </section>
 
-  <section id="certifications" class="alt-bg">
+  <section id="certifications">
     <div class="wrap">
       <div class="cmd-label"><b>$</b> cat interests.log</div>
       <div class="board">
